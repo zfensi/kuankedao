@@ -5,12 +5,30 @@ export default defineConfig({
   site: siteConfig.siteUrl,
   output: 'static',
   redirects: {
-    '/tag': '/blog/tags.html',
-    '/tag/[...slug]': '/blog/tags.html',
-    '/hong-mu': '/blog/category/ins.html',
-    '/hong-mu/[...slug]': '/blog/category/ins.html',
-    '/blogdetail': '/blog/categories.html',
-    '/blogdetail/[...slug]': '/blog/categories.html',
+    '/tag': {
+      status: 301,
+      destination: '/blog/tags.html',
+    },
+    '/tag/[...slug]': {
+      status: 301,
+      destination: '/blog/tags.html',
+    },
+    '/hong-mu': {
+      status: 301,
+      destination: '/blog/category/ins.html',
+    },
+    '/hong-mu/[...slug]': {
+      status: 301,
+      destination: '/blog/category/ins.html',
+    },
+    '/blogdetail': {
+      status: 301,
+      destination: '/blog/categories.html',
+    },
+    '/blogdetail/[...slug]': {
+      status: 301,
+      destination: '/blog/categories.html',
+    },
   },
   build: {
     format: 'file',

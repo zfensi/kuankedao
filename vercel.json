@@ -9,32 +9,32 @@
     {
       "source": "/tag",
       "destination": "/blog/tags.html",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/tag/:path*",
       "destination": "/blog/tags.html",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/hong-mu",
       "destination": "/blog/category/ins.html",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/hong-mu/:path*",
       "destination": "/blog/category/ins.html",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/blogdetail",
       "destination": "/blog/categories.html",
-      "permanent": true
+      "statusCode": 301
     },
     {
       "source": "/blogdetail/:path*",
       "destination": "/blog/categories.html",
-      "permanent": true
+      "statusCode": 301
     }
   ]
 }
