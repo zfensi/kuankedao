@@ -32,6 +32,11 @@
       "statusCode": 301
     },
     {
+      "source": "/blogdetail/ph-ins-likes-free-oldest-ig-smm-panel-ins-smm-panel-china-fx.html",
+      "destination": "/blog/instagram-self-service-order-page-matching.html",
+      "statusCode": 301
+    },
+    {
       "source": "/blogdetail/:path*",
       "destination": "/blog/categories.html",
       "statusCode": 301
