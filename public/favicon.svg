@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="宽客岛">
+  <rect width="64" height="64" rx="14" fill="#eef8f0" />
+  <path d="M14 45L26 21l7 13 7-9 10 20" fill="none" stroke="#6bbf85" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" />
+  <circle cx="26" cy="21" r="3" fill="#9ad8ae" />
+  <circle cx="40" cy="25" r="3" fill="#9ad8ae" />
+</svg>

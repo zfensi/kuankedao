@@ -1,0 +1,46 @@
+﻿---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteConfig from '../../site.config.mjs';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: `关于 | ${siteConfig.siteName}`,
+  url: `${siteConfig.siteUrl}/about/`,
+  inLanguage: siteConfig.siteLanguage,
+  description: '了解宽客岛的定位、内容边界与研究方法。',
+};
+---
+
+<BaseLayout
+  title={`关于 | ${siteConfig.siteName}`}
+  description="了解宽客岛的定位、内容边界与研究方法。"
+  canonicalPath="/about/"
+  keywords={[...siteConfig.keywords, '关于宽客岛', '量化博客']}
+  structuredData={structuredData}
+>
+  <section class="about-grid">
+    <article class="panel">
+      <p class="section-kicker">About</p>
+      <h1 class="section-title">宽客岛是什么</h1>
+      <p>
+        宽客岛是一个围绕量化交易与研究工程展开的独立博客，关注可验证的策略逻辑、可复用的研究方法，以及可落地的交易系统建设。
+      </p>
+      <p>
+        内容重点包括因子构建、组合管理、回测评估、数据质量、自动化执行与风险控制，适合希望把研究流程系统化的交易者与开发者。
+      </p>
+      <p>
+        站内也保留了 `ins`、`Twitter`、`Facebook` 这类个人爱好分类，用来记录我对平台内容风格、信息流和社区感的兴趣观察。
+      </p>
+    </article>
+    <aside class="panel">
+      <p class="section-kicker">Principles</p>
+      <h2 class="section-title">内容原则</h2>
+      <div class="insight-list">
+        <span>先提出假设，再验证，不直接输出结论崇拜。</span>
+        <span>强调策略生命周期，而不只讨论单一指标。</span>
+        <span>研究、工程、执行与风控必须构成闭环。</span>
+      </div>
+    </aside>
+  </section>
+</BaseLayout>

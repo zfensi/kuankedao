@@ -1,0 +1,72 @@
+﻿---
+import { getCollection } from 'astro:content';
+import ArticleCard from '../../components/ArticleCard.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  getCategoriesUrl,
+  getCategoryUrl,
+  getCategorySummaries,
+  getTagUrl,
+  getTagSummaries,
+  getTagsUrl,
+  sortPosts,
+} from '../../lib/blog';
+import siteConfig from '../../../site.config.mjs';
+
+const posts = sortPosts(await getCollection('blog'));
+const categories = getCategorySummaries(posts);
+const tags = getTagSummaries(posts).slice(0, 12);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `博客 | ${siteConfig.siteName}`,
+  url: `${siteConfig.siteUrl}/blog/`,
+  inLanguage: siteConfig.siteLanguage,
+  description: '查看宽客岛全部量化交易与研究文章。',
+};
+---
+
+<BaseLayout
+  title={`博客 | ${siteConfig.siteName}`}
+  description="查看宽客岛全部量化交易与研究文章。"
+  canonicalPath="/blog/"
+  keywords={[...siteConfig.keywords, '量化博客', '交易笔记', '策略专栏']}
+  structuredData={structuredData}
+>
+  <section class="panel">
+    <p class="section-kicker">All Posts</p>
+    <h1 class="section-title">博客文章</h1>
+    <p>围绕量化策略、因子研究、风险控制、交易工程持续更新。</p>
+    <div class="quick-links">
+      <a href={getCategoriesUrl()}>浏览分类</a>
+      <a href={getTagsUrl()}>浏览标签</a>
+      <a href="/rss.xml">订阅 RSS</a>
+    </div>
+  </section>
+
+  <section class="insight-columns">
+    <article class="panel">
+      <p class="section-kicker">Categories</p>
+      <h2 class="section-title">分类概览</h2>
+      <div class="summary-list">
+        {categories.map((category) => (
+          <a class="summary-item" href={getCategoryUrl(category.name)}>
+            <span>{category.name}</span>
+            <strong>{category.count} 篇</strong>
+          </a>
+        ))}
+      </div>
+    </article>
+    <article class="panel">
+      <p class="section-kicker">Tags</p>
+      <h2 class="section-title">热门标签</h2>
+      <div class="tag-row">
+        {tags.map((tag) => <a class="tag" href={getTagUrl(tag.name)}>#{tag.name}</a>)}
+      </div>
+    </article>
+  </section>
+
+  <section class="post-grid">
+    {posts.map((post) => <ArticleCard post={post} />)}
+  </section>
+</BaseLayout>

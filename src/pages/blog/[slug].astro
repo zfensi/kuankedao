@@ -1,0 +1,95 @@
+---
+import { getCollection, render } from 'astro:content';
+import RelatedPosts from '../../components/RelatedPosts.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  formatDate,
+  getAdjacentPosts,
+  getCategoryUrl,
+  getPostUrl,
+  getRelatedPosts,
+  getTagUrl,
+  toAbsoluteUrl,
+} from '../../lib/blog';
+import siteConfig from '../../../site.config.mjs';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post, posts },
+  }));
+}
+
+const { post, posts } = Astro.props;
+const { Content } = await render(post);
+const relatedPosts = getRelatedPosts(posts, post, 3);
+const { previousPost, nextPost } = getAdjacentPosts(posts, post);
+const articleStructuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.publishDate.toISOString(),
+  dateModified: post.data.publishDate.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: siteConfig.author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: siteConfig.siteName,
+  },
+  mainEntityOfPage: toAbsoluteUrl(`/blog/${post.slug}/`),
+  inLanguage: siteConfig.siteLanguage,
+  keywords: post.data.tags.join(', '),
+};
+---
+
+<BaseLayout
+  title={`${post.data.title} | ${siteConfig.siteName}`}
+  description={post.data.description}
+  canonicalPath={`/blog/${post.slug}/`}
+  keywords={[...siteConfig.keywords, post.data.category, ...post.data.tags]}
+  pageType="article"
+  publishedTime={post.data.publishDate.toISOString()}
+  structuredData={articleStructuredData}
+>
+  <article class="article-shell">
+    <p class="section-kicker"><a href={getCategoryUrl(post.data.category)}>{post.data.category}</a></p>
+    <h1>{post.data.title}</h1>
+    <div class="article-meta">
+      <span>{formatDate(post.data.publishDate)}</span>
+      {post.data.readingTime && <span>{post.data.readingTime}</span>}
+      {post.data.tags.map((tag) => <a class="tag" href={getTagUrl(tag)}>#{tag}</a>)}
+    </div>
+    <div class="article-content">
+      <Content />
+    </div>
+    <nav class="article-pagination" aria-label="文章导航">
+      {previousPost ? (
+        <a class="article-pagination__item" href={getPostUrl(previousPost)}>
+          <span class="article-pagination__label">上一篇</span>
+          <strong>{previousPost.data.title}</strong>
+        </a>
+      ) : (
+        <div class="article-pagination__item article-pagination__item--empty">
+          <span class="article-pagination__label">上一篇</span>
+          <strong>已经到最早一篇</strong>
+        </div>
+      )}
+      {nextPost ? (
+        <a class="article-pagination__item" href={getPostUrl(nextPost)}>
+          <span class="article-pagination__label">下一篇</span>
+          <strong>{nextPost.data.title}</strong>
+        </a>
+      ) : (
+        <div class="article-pagination__item article-pagination__item--empty">
+          <span class="article-pagination__label">下一篇</span>
+          <strong>已经到最新一篇</strong>
+        </div>
+      )}
+    </nav>
+  </article>
+  <RelatedPosts posts={relatedPosts} />
+</BaseLayout>

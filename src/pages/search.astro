@@ -1,0 +1,137 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDate, getPostUrl, sortPosts } from '../lib/blog';
+import siteConfig from '../../site.config.mjs';
+
+const posts = sortPosts(await getCollection('blog'));
+const searchIndex = posts.map((post) => ({
+  title: post.data.title,
+  description: post.data.description,
+  category: post.data.category,
+  tags: post.data.tags,
+  publishDate: formatDate(post.data.publishDate),
+  url: getPostUrl(post),
+  content: post.body.replace(/\s+/g, ' ').trim(),
+}));
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SearchResultsPage',
+  name: `搜索 | ${siteConfig.siteName}`,
+  url: `${siteConfig.siteUrl}/search/`,
+  inLanguage: siteConfig.siteLanguage,
+  description: '搜索宽客岛的量化交易、策略研究与风险控制文章。',
+};
+---
+
+<BaseLayout
+  title={`搜索 | ${siteConfig.siteName}`}
+  description="搜索宽客岛的量化交易、策略研究与风险控制文章。"
+  canonicalPath="/search/"
+  keywords={[...siteConfig.keywords, '站内搜索', '量化文章搜索']}
+  structuredData={structuredData}
+>
+  <section class="panel">
+    <p class="section-kicker">Search</p>
+    <h1 class="section-title">搜索文章</h1>
+    <p>支持按标题、摘要、分类、标签与正文关键词进行静态搜索。</p>
+    <form class="search-form" role="search">
+      <input
+        id="search-input"
+        name="q"
+        type="search"
+        placeholder="输入关键词，例如：回测、风控、交易系统"
+        autocomplete="off"
+      />
+    </form>
+    <p id="search-status" class="search-status">输入关键词后将实时筛选相关文章。</p>
+  </section>
+
+  <section id="search-results" class="search-results"></section>
+</BaseLayout>
+
+<script is:inline define:vars={{ searchIndex }}>
+  const data = searchIndex;
+  const input = document.getElementById('search-input');
+  const resultsRoot = document.getElementById('search-results');
+  const status = document.getElementById('search-status');
+  const url = new URL(window.location.href);
+  const initialQuery = url.searchParams.get('q') || '';
+
+  const escapeHtml = (value) =>
+    value
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#39;');
+
+  const renderResults = (query) => {
+    const normalizedQuery = query.trim().toLowerCase();
+
+    if (!normalizedQuery) {
+      resultsRoot.innerHTML = '';
+      status.textContent = `当前共收录 ${data.length} 篇文章，可按关键词实时筛选。`;
+      return;
+    }
+
+    const results = data.filter((item) => {
+      const haystack = [
+        item.title,
+        item.description,
+        item.category,
+        item.tags.join(' '),
+        item.content,
+      ]
+        .join(' ')
+        .toLowerCase();
+
+      return haystack.includes(normalizedQuery);
+    });
+
+    status.textContent = `关键词“${query}”找到 ${results.length} 篇相关文章。`;
+
+    if (!results.length) {
+      resultsRoot.innerHTML = `
+        <article class="search-result-card">
+          <h2>没有找到匹配结果</h2>
+          <p>可以尝试更短的关键词，或改用分类、标签页面继续浏览。</p>
+        </article>
+      `;
+      return;
+    }
+
+    resultsRoot.innerHTML = results
+      .map(
+        (item) => `
+          <article class="search-result-card">
+            <p class="eyebrow">${escapeHtml(item.category)} · ${escapeHtml(item.publishDate)}</p>
+            <h2><a href="${item.url}">${escapeHtml(item.title)}</a></h2>
+            <p>${escapeHtml(item.description)}</p>
+            <div class="tag-row">
+              ${item.tags.map((tag) => `<span class="tag">#${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          </article>
+        `,
+      )
+      .join('');
+  };
+
+  input.value = initialQuery;
+  renderResults(initialQuery);
+
+  input.addEventListener('input', (event) => {
+    const query = event.target.value;
+    const nextUrl = new URL(window.location.href);
+
+    if (query.trim()) {
+      nextUrl.searchParams.set('q', query);
+    } else {
+      nextUrl.searchParams.delete('q');
+    }
+
+    window.history.replaceState({}, '', nextUrl);
+    renderResults(query);
+  });
+</script>

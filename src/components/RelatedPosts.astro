@@ -1,0 +1,28 @@
+---
+import type { BlogPost } from '../lib/blog';
+import { formatDate, getPostUrl } from '../lib/blog';
+
+interface Props {
+  title?: string;
+  posts: BlogPost[];
+}
+
+const { title = '相关文章', posts } = Astro.props;
+---
+
+{posts.length > 0 && (
+  <section class="related-posts panel">
+    <p class="section-kicker">Related Reading</p>
+    <h2 class="section-title">{title}</h2>
+    <div class="related-posts__list">
+      {posts.map((post) => (
+        <article class="related-post">
+          <p class="eyebrow">{post.data.category}</p>
+          <h3><a href={getPostUrl(post)}>{post.data.title}</a></h3>
+          <p class="post-card__meta">{formatDate(post.data.publishDate)}</p>
+          <p>{post.data.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+)}

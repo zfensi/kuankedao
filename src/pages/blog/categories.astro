@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCategorySummaries, getCategoryUrl, sortPosts } from '../../lib/blog';
+import siteConfig from '../../../site.config.mjs';
+
+const posts = sortPosts(await getCollection('blog'));
+const categories = getCategorySummaries(posts);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `分类 | ${siteConfig.siteName}`,
+  url: `${siteConfig.siteUrl}/blog/categories/`,
+  inLanguage: siteConfig.siteLanguage,
+  description: '按分类浏览宽客岛的量化交易文章。',
+};
+---
+
+<BaseLayout
+  title={`分类 | ${siteConfig.siteName}`}
+  description="按分类浏览宽客岛的量化交易文章。"
+  canonicalPath="/blog/categories/"
+  keywords={[...siteConfig.keywords, '量化分类', '研究栏目']}
+  structuredData={structuredData}
+>
+  <section class="panel">
+    <p class="section-kicker">Categories</p>
+    <h1 class="section-title">分类导航</h1>
+    <p>从研究框架、风险控制、系统搭建到策略认知，按主题快速进入对应内容。</p>
+  </section>
+
+  <section class="category-grid">
+    {categories.map((category) => (
+      <article class="category-panel">
+        <span class="category-title">{category.name}</span>
+        <h2>{category.posts[0]?.data.title}</h2>
+        <p>{category.posts[0]?.data.description}</p>
+        <p class="post-card__meta">共 {category.count} 篇</p>
+        <a href={getCategoryUrl(category.name)}>进入分类</a>
+      </article>
+    ))}
+  </section>
+</BaseLayout>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f7fdf8" />
+      <stop offset="100%" stop-color="#e6f6eb" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="930" cy="150" r="180" fill="#9ad8ae" fill-opacity="0.28" />
+  <circle cx="1010" cy="510" r="240" fill="#cbeed6" fill-opacity="0.8" />
+  <text x="96" y="250" fill="#183526" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="82" font-weight="700">宽客岛</text>
+  <text x="96" y="338" fill="#5f7f6a" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="38">量化交易 · 策略研究 · 系统搭建 · 风险控制</text>
+  <text x="96" y="430" fill="#4fa46b" font-family="Segoe UI, Microsoft YaHei, sans-serif" font-size="34">www.kuankedao.com</text>
+</svg>

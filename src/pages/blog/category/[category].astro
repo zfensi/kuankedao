@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCategoryUrl, sortPosts } from '../../../lib/blog';
+import siteConfig from '../../../../site.config.mjs';
+
+export async function getStaticPaths() {
+  const posts = sortPosts(await getCollection('blog'));
+  const categories = [...new Set(posts.map((post) => post.data.category))];
+
+  return categories.map((category) => ({
+    params: { category },
+    props: {
+      category,
+      posts: posts.filter((post) => post.data.category === category),
+    },
+  }));
+}
+
+const { category, posts } = Astro.props;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `${category} | ${siteConfig.siteName}`,
+  url: `${siteConfig.siteUrl}${getCategoryUrl(category)}`,
+  inLanguage: siteConfig.siteLanguage,
+  description: `查看宽客岛“${category}”分类下的全部文章。`,
+};
+---
+
+<BaseLayout
+  title={`${category} | ${siteConfig.siteName}`}
+  description={`查看宽客岛“${category}”分类下的全部文章。`}
+  canonicalPath={getCategoryUrl(category)}
+  keywords={[...siteConfig.keywords, category, '分类文章']}
+  structuredData={structuredData}
+>
+  <section class="panel">
+    <p class="section-kicker">Category</p>
+    <h1 class="section-title">{category}</h1>
+    <p>共收录 {posts.length} 篇文章，帮助你围绕同一研究主题持续深入阅读。</p>
+  </section>
+
+  <section class="post-grid">
+    {posts.map((post) => <ArticleCard post={post} />)}
+  </section>
+</BaseLayout>

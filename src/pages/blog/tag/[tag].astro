@@ -1,0 +1,48 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleCard from '../../../components/ArticleCard.astro';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getTagUrl, sortPosts } from '../../../lib/blog';
+import siteConfig from '../../../../site.config.mjs';
+
+export async function getStaticPaths() {
+  const posts = sortPosts(await getCollection('blog'));
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))];
+
+  return tags.map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: posts.filter((post) => post.data.tags.includes(tag)),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `#${tag} | ${siteConfig.siteName}`,
+  url: `${siteConfig.siteUrl}${getTagUrl(tag)}`,
+  inLanguage: siteConfig.siteLanguage,
+  description: `查看宽客岛标签“${tag}”下的全部文章。`,
+};
+---
+
+<BaseLayout
+  title={`#${tag} | ${siteConfig.siteName}`}
+  description={`查看宽客岛标签“${tag}”下的全部文章。`}
+  canonicalPath={getTagUrl(tag)}
+  keywords={[...siteConfig.keywords, tag, '标签文章']}
+  structuredData={structuredData}
+>
+  <section class="panel">
+    <p class="section-kicker">Tag</p>
+    <h1 class="section-title">#{tag}</h1>
+    <p>共收录 {posts.length} 篇文章，适合围绕同一标签做横向比较和串联阅读。</p>
+  </section>
+
+  <section class="post-grid">
+    {posts.map((post) => <ArticleCard post={post} />)}
+  </section>
+</BaseLayout>

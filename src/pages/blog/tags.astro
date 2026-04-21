@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getTagSummaries, getTagUrl, sortPosts } from '../../lib/blog';
+import siteConfig from '../../../site.config.mjs';
+
+const posts = sortPosts(await getCollection('blog'));
+const tags = getTagSummaries(posts);
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `标签 | ${siteConfig.siteName}`,
+  url: `${siteConfig.siteUrl}/blog/tags/`,
+  inLanguage: siteConfig.siteLanguage,
+  description: '按标签浏览宽客岛的量化交易文章。',
+};
+---
+
+<BaseLayout
+  title={`标签 | ${siteConfig.siteName}`}
+  description="按标签浏览宽客岛的量化交易文章。"
+  canonicalPath="/blog/tags/"
+  keywords={[...siteConfig.keywords, '量化标签', '研究标签']}
+  structuredData={structuredData}
+>
+  <section class="panel">
+    <p class="section-kicker">Tags</p>
+    <h1 class="section-title">标签导航</h1>
+    <p>通过标签快速穿透策略主题、工程模块和风险议题，形成交叉阅读路径。</p>
+  </section>
+
+  <section class="summary-list summary-list--tags">
+    {tags.map((tag) => (
+      <a class="summary-item" href={getTagUrl(tag.name)}>
+        <span>#{tag.name}</span>
+        <strong>{tag.count} 篇</strong>
+      </a>
+    ))}
+  </section>
+</BaseLayout>

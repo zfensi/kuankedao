@@ -1,0 +1,151 @@
+﻿---
+import { getCollection } from 'astro:content';
+import ArticleCard from '../components/ArticleCard.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  getAllTags,
+  getCategoriesUrl,
+  getCategorySummaries,
+  getCategoryUrl,
+  getFeaturedPosts,
+  getRecentPosts,
+  getPostUrl,
+  getTagUrl,
+  getTagsUrl,
+  sortPosts,
+} from '../lib/blog';
+import siteConfig from '../../site.config.mjs';
+
+const posts = sortPosts(await getCollection('blog'));
+const featuredPosts = getFeaturedPosts(posts, 3);
+const recentPosts = getRecentPosts(posts, 4);
+const categorySummaries = getCategorySummaries(posts);
+const tags = getAllTags(posts).slice(0, 8);
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: siteConfig.siteName,
+    url: siteConfig.siteUrl,
+    inLanguage: siteConfig.siteLanguage,
+    description: siteConfig.description,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: siteConfig.siteName,
+    url: siteConfig.siteUrl,
+    inLanguage: siteConfig.siteLanguage,
+    description: siteConfig.description,
+  },
+];
+---
+
+<BaseLayout
+  title={`${siteConfig.siteName} | 量化交易博客`}
+  description={siteConfig.description}
+  canonicalPath="/"
+  keywords={[...siteConfig.keywords, '量化研究', '交易系统']}
+  structuredData={structuredData}
+>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="section-kicker">Quant Research Journal</p>
+      <h1>宽客岛，聚焦量化交易与可执行研究框架</h1>
+      <p class="lead">
+        这里沉淀策略假设、数据观察、交易系统搭建与风险控制方法，目标不是制造噪音，而是形成可迭代的研究资产。
+      </p>
+      <div class="hero-actions">
+        <a href="/blog/">进入博客</a>
+        <a href="/about/">了解宽客岛</a>
+      </div>
+      <div class="hero-metrics">
+        <div class="metric">
+          <span class="metric__value">{posts.length}</span>
+          <span class="metric__label">研究文章</span>
+        </div>
+        <div class="metric">
+          <span class="metric__value">{categorySummaries.length}</span>
+          <span class="metric__label">专题栏目</span>
+        </div>
+        <div class="metric">
+          <span class="metric__value">{tags.length}</span>
+          <span class="metric__label">高频标签</span>
+        </div>
+      </div>
+    </div>
+    <aside class="hero-side panel">
+      <h2 class="section-title">当前聚焦</h2>
+      <div class="insight-list">
+        <span>策略研究：从 Alpha 假设到回测验证</span>
+        <span>工程体系：数据管线、信号生产与执行闭环</span>
+        <span>组合风险：仓位管理、回撤约束与风险预算</span>
+        <span>认知升级：把研究笔记沉淀成长期资产</span>
+      </div>
+    </aside>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <p class="section-kicker">Featured Notes</p>
+      <h2 class="section-title">精选文章</h2>
+    </div>
+    <div class="post-grid">
+      {featuredPosts.map((post) => <ArticleCard post={post} />)}
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <p class="section-kicker">Research Tracks</p>
+      <h2 class="section-title">内容栏目</h2>
+    </div>
+    <div class="category-grid">
+      {categorySummaries.map((category) => (
+        <article class="category-panel">
+          <span class="category-title">{category.name}</span>
+          <h3>{category.posts[0]?.data.title}</h3>
+          <p>{category.posts[0]?.data.description}</p>
+          <a href={getCategoryUrl(category.name)}>查看 {category.name}</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <p class="section-kicker">Latest Research</p>
+      <h2 class="section-title">最新更新</h2>
+    </div>
+    <div class="timeline-grid">
+      {recentPosts.map((post) => (
+        <article class="timeline-card">
+          <p class="eyebrow">{post.data.category}</p>
+          <h3><a href={getPostUrl(post)}>{post.data.title}</a></h3>
+          <p>{post.data.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="insight-columns">
+    <article class="panel">
+      <p class="section-kicker">Tag Cloud</p>
+      <h2 class="section-title">高频标签</h2>
+      <div class="tag-row">
+        {tags.map((tag) => <a class="tag" href={getTagUrl(tag)}>#{tag}</a>)}
+      </div>
+      <p class="section-footnote"><a href={getTagsUrl()}>查看全部标签</a></p>
+    </article>
+    <article class="panel">
+      <p class="section-kicker">Reading Map</p>
+      <h2 class="section-title">阅读导航</h2>
+      <div class="quick-links">
+        <a href="/blog/">全部文章</a>
+        <a href={getCategoriesUrl()}>按分类浏览</a>
+        <a href="/rss.xml">订阅 RSS</a>
+        <a href="/about/">了解站点定位</a>
+      </div>
+    </article>
+  </section>
+</BaseLayout>

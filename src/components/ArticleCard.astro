@@ -1,0 +1,20 @@
+﻿---
+import type { BlogPost } from '../lib/blog';
+import { formatDate, getCategoryUrl, getPostUrl, getTagUrl } from '../lib/blog';
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+---
+
+<article class="post-card">
+  <p class="eyebrow"><a href={getCategoryUrl(post.data.category)}>{post.data.category}</a></p>
+  <h3><a href={getPostUrl(post)}>{post.data.title}</a></h3>
+  <p class="post-card__meta">{formatDate(post.data.publishDate)}{post.data.readingTime ? ` · ${post.data.readingTime}` : ''}</p>
+  <p>{post.data.description}</p>
+  <div class="tag-row">
+    {post.data.tags.map((tag) => <a class="tag" href={getTagUrl(tag)}>#{tag}</a>)}
+  </div>
+</article>
