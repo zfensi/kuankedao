@@ -1,4 +1,40 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true
+  "redirects": [
+    {
+      "source": "/archives.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/tag",
+      "destination": "/blog/tags.html",
+      "permanent": true
+    },
+    {
+      "source": "/tag/:path*",
+      "destination": "/blog/tags.html",
+      "permanent": true
+    },
+    {
+      "source": "/hong-mu",
+      "destination": "/blog/category/ins.html",
+      "permanent": true
+    },
+    {
+      "source": "/hong-mu/:path*",
+      "destination": "/blog/category/ins.html",
+      "permanent": true
+    },
+    {
+      "source": "/blogdetail",
+      "destination": "/blog/categories.html",
+      "permanent": true
+    },
+    {
+      "source": "/blogdetail/:path*",
+      "destination": "/blog/categories.html",
+      "permanent": true
+    }
+  ]
 }

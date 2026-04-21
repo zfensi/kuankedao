@@ -1,4 +1,4 @@
-﻿---
+---
 import '../styles/global.css';
 import siteConfig from '../../site.config.mjs';
 import SeoHead from '../components/SeoHead.astro';
@@ -12,6 +12,7 @@ interface Props {
   pageType?: 'website' | 'article';
   publishedTime?: string;
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
+  robots?: string;
 }
 
 const {
@@ -23,6 +24,7 @@ const {
   pageType,
   publishedTime,
   structuredData,
+  robots,
 } = Astro.props;
 ---
 
@@ -38,6 +40,7 @@ const {
       pageType={pageType}
       publishedTime={publishedTime}
       structuredData={structuredData}
+      robots={robots}
     />
   </head>
   <body>
@@ -63,12 +66,12 @@ const {
         </div>
         <div class="footer-links">
           <a href="https://www.kuankedao.com">www.kuankedao.com</a>
-          <a href="/blog/">最新文章</a>
-          <a href="/search/">搜索</a>
-          <a href="/blog/categories/">分类</a>
-          <a href="/blog/tags/">标签</a>
+          <a href="/blog.html">最新文章</a>
+          <a href="/search.html">搜索</a>
+          <a href="/blog/categories.html">分类</a>
+          <a href="/blog/tags.html">标签</a>
           <a href="/rss.xml">RSS</a>
-          <a href="/about/">关于宽客岛</a>
+          <a href="/about.html">关于宽客岛</a>
         </div>
       </div>
     </footer>

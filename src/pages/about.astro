@@ -1,4 +1,4 @@
-﻿---
+---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import siteConfig from '../../site.config.mjs';
 
@@ -6,7 +6,7 @@ const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
   name: `关于 | ${siteConfig.siteName}`,
-  url: `${siteConfig.siteUrl}/about/`,
+  url: `${siteConfig.siteUrl}/about.html`,
   inLanguage: siteConfig.siteLanguage,
   description: '了解宽客岛的定位、内容边界与研究方法。',
 };
@@ -15,7 +15,7 @@ const structuredData = {
 <BaseLayout
   title={`关于 | ${siteConfig.siteName}`}
   description="了解宽客岛的定位、内容边界与研究方法。"
-  canonicalPath="/about/"
+  canonicalPath="/about.html"
   keywords={[...siteConfig.keywords, '关于宽客岛', '量化博客']}
   structuredData={structuredData}
 >

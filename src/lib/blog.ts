@@ -1,4 +1,4 @@
-﻿import type { CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import siteConfig from '../../site.config.mjs';
 
 export type BlogPost = CollectionEntry<'blog'>;
@@ -14,23 +14,23 @@ export function sortPosts(posts: BlogPost[]) {
 }
 
 export function getPostUrl(post: BlogPost) {
-  return `/blog/${post.slug}/`;
+  return `/blog/${post.slug}.html`;
 }
 
 export function getCategoryUrl(category: string) {
-  return `/blog/category/${encodeURIComponent(category)}/`;
+  return `/blog/category/${encodeURIComponent(category)}.html`;
 }
 
 export function getTagUrl(tag: string) {
-  return `/blog/tag/${encodeURIComponent(tag)}/`;
+  return `/blog/tag/${encodeURIComponent(tag)}.html`;
 }
 
 export function getCategoriesUrl() {
-  return '/blog/categories/';
+  return '/blog/categories.html';
 }
 
 export function getTagsUrl() {
-  return '/blog/tags/';
+  return '/blog/tags.html';
 }
 
 export function formatDate(date: Date) {

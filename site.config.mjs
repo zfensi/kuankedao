@@ -1,4 +1,4 @@
-﻿const siteConfig = {
+const siteConfig = {
   siteName: '宽客岛',
   siteUrl: 'https://www.kuankedao.com',
   siteLanguage: 'zh-CN',
@@ -10,11 +10,11 @@
   keywords: ['宽客岛', '量化交易', '策略研究', '程序化交易', '风险控制'],
   navigation: [
     { label: '首页', href: '/' },
-    { label: '博客', href: '/blog/' },
-    { label: '搜索', href: '/search/' },
-    { label: '分类', href: '/blog/categories/' },
-    { label: '标签', href: '/blog/tags/' },
-    { label: '关于', href: '/about/' },
+    { label: '博客', href: '/blog.html' },
+    { label: '搜索', href: '/search.html' },
+    { label: '分类', href: '/blog/categories.html' },
+    { label: '标签', href: '/blog/tags.html' },
+    { label: '关于', href: '/about.html' },
   ],
 };
 

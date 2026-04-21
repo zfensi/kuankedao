@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteConfig from '../../site.config.mjs';
+---
+
+<BaseLayout
+  title={`404 | ${siteConfig.siteName}`}
+  description="你访问的页面不存在，可能已被移动、删除，或链接地址输入有误。"
+  canonicalPath="/404.html"
+  keywords={[...siteConfig.keywords, '404', '页面不存在']}
+  robots="noindex,nofollow"
+>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="section-kicker">Not Found</p>
+      <h1>页面不存在</h1>
+      <p class="lead">
+        你访问的地址可能已经失效，或者页面路径发生了变更。可以返回首页，或从文章、分类、标签页继续浏览。
+      </p>
+      <div class="hero-actions">
+        <a href="/">返回首页</a>
+        <a href="/blog.html">查看文章</a>
+      </div>
+    </div>
+    <aside class="hero-side panel">
+      <h2 class="section-title">你可以继续访问</h2>
+      <div class="quick-links">
+        <a href="/search.html">搜索内容</a>
+        <a href="/blog/categories.html">浏览分类</a>
+        <a href="/blog/tags.html">浏览标签</a>
+        <a href="/about.html">了解站点</a>
+      </div>
+    </aside>
+  </section>
+</BaseLayout>

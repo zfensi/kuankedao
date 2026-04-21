@@ -10,7 +10,7 @@ const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   name: `标签 | ${siteConfig.siteName}`,
-  url: `${siteConfig.siteUrl}/blog/tags/`,
+  url: `${siteConfig.siteUrl}/blog/tags.html`,
   inLanguage: siteConfig.siteLanguage,
   description: '按标签浏览宽客岛的量化交易文章。',
 };
@@ -19,7 +19,7 @@ const structuredData = {
 <BaseLayout
   title={`标签 | ${siteConfig.siteName}`}
   description="按标签浏览宽客岛的量化交易文章。"
-  canonicalPath="/blog/tags/"
+  canonicalPath="/blog/tags.html"
   keywords={[...siteConfig.keywords, '量化标签', '研究标签']}
   structuredData={structuredData}
 >

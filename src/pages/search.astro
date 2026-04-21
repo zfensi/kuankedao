@@ -19,7 +19,7 @@ const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'SearchResultsPage',
   name: `搜索 | ${siteConfig.siteName}`,
-  url: `${siteConfig.siteUrl}/search/`,
+  url: `${siteConfig.siteUrl}/search.html`,
   inLanguage: siteConfig.siteLanguage,
   description: '搜索宽客岛的量化交易、策略研究与风险控制文章。',
 };
@@ -28,7 +28,7 @@ const structuredData = {
 <BaseLayout
   title={`搜索 | ${siteConfig.siteName}`}
   description="搜索宽客岛的量化交易、策略研究与风险控制文章。"
-  canonicalPath="/search/"
+  canonicalPath="/search.html"
   keywords={[...siteConfig.keywords, '站内搜索', '量化文章搜索']}
   structuredData={structuredData}
 >

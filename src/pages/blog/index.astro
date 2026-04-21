@@ -1,4 +1,4 @@
-﻿---
+---
 import { getCollection } from 'astro:content';
 import ArticleCard from '../../components/ArticleCard.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -20,7 +20,7 @@ const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
   name: `博客 | ${siteConfig.siteName}`,
-  url: `${siteConfig.siteUrl}/blog/`,
+  url: `${siteConfig.siteUrl}/blog.html`,
   inLanguage: siteConfig.siteLanguage,
   description: '查看宽客岛全部量化交易与研究文章。',
 };
@@ -29,7 +29,7 @@ const structuredData = {
 <BaseLayout
   title={`博客 | ${siteConfig.siteName}`}
   description="查看宽客岛全部量化交易与研究文章。"
-  canonicalPath="/blog/"
+  canonicalPath="/blog.html"
   keywords={[...siteConfig.keywords, '量化博客', '交易笔记', '策略专栏']}
   structuredData={structuredData}
 >

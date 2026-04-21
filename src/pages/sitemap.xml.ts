@@ -1,4 +1,4 @@
-﻿import type { APIRoute } from 'astro';
+import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import siteConfig from '../../site.config.mjs';
 import { getCategorySummaries, getCategoryUrl, getTagSummaries, getTagUrl, sortPosts } from '../lib/blog';
@@ -9,13 +9,13 @@ export const GET: APIRoute = async () => {
   const tags = getTagSummaries(posts);
   const urls = [
     '/',
-    '/blog/',
-    '/blog/categories/',
-    '/blog/tags/',
-    '/search/',
-    '/about/',
+    '/blog.html',
+    '/blog/categories.html',
+    '/blog/tags.html',
+    '/search.html',
+    '/about.html',
     '/rss.xml',
-    ...posts.map((post) => `/blog/${post.slug}/`),
+    ...posts.map((post) => `/blog/${post.slug}.html`),
     ...categories.map((category) => getCategoryUrl(category.name)),
     ...tags.map((tag) => getTagUrl(tag.name)),
   ];
