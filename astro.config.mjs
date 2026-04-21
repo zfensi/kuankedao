@@ -9,23 +9,11 @@ export default defineConfig({
       status: 301,
       destination: '/blog/tags.html',
     },
-    '/tag/[...slug]': {
-      status: 301,
-      destination: '/blog/tags.html',
-    },
     '/hong-mu': {
       status: 301,
       destination: '/blog/category/ins.html',
     },
-    '/hong-mu/[...slug]': {
-      status: 301,
-      destination: '/blog/category/ins.html',
-    },
     '/blogdetail': {
-      status: 301,
-      destination: '/blog/categories.html',
-    },
-    '/blogdetail/[...slug]': {
       status: 301,
       destination: '/blog/categories.html',
     },
