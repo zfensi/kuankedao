@@ -1,0 +1,25 @@
+{
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/index.html", "destination": "/index.html" },
+    { "source": "/resources.html", "destination": "/index.html" },
+    { "source": "/request.html", "destination": "/index.html" },
+    { "source": "/partners.html", "destination": "/index.html" },
+    { "source": "/community.html", "destination": "/index.html" },
+    { "source": "/blog.html", "destination": "/index.html" },
+    { "source": "/about.html", "destination": "/index.html" },
+    { "source": "/resources/(.*).html", "destination": "/index.html" },
+    { "source": "/community/(.*).html", "destination": "/index.html" },
+    { "source": "/blog/(.*).html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/index.html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/resources.html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/request.html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/partners.html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/community.html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/blog.html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/about.html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/resources/(.*).html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/community/(.*).html", "destination": "/index.html" },
+    { "source": "/(en|zh-tw|ja|ko)/blog/(.*).html", "destination": "/index.html" }
+  ]
+}
