@@ -5,8 +5,9 @@ import { ArrowRight, Globe2, Languages, ShieldCheck, Sparkles } from 'lucide-rea
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Badge } from '@/components/ui/Badge'
+import { listBlogPosts } from '@/blog/content'
 import { useI18n } from '@/i18n/useI18n'
-import { buildArticlePath, buildPagePath, buildResourcePath } from '@/i18n/routing'
+import { buildArticlePath, buildBlogArticlePath, buildPagePath, buildResourcePath } from '@/i18n/routing'
 import { listArticles, listResources } from '@/api/kuankedao'
 import type { ArticleItem, ResourceItem } from '@/api/types'
 
@@ -26,6 +27,7 @@ export default function Home() {
   const { t, locale } = useI18n()
   const [resources, setResources] = useState<ResourceItem[] | null>(null)
   const [articles, setArticles] = useState<ArticleItem[] | null>(null)
+  const blogPosts = useMemo(() => listBlogPosts().slice(0, 4), [])
 
   useEffect(() => {
     let alive = true
@@ -294,6 +296,34 @@ export default function Home() {
                 </div>
                 <div className="mt-2 text-xs leading-relaxed text-[rgb(var(--muted))]">{a.summary}</div>
                 <div className="mt-4 text-xs text-[rgb(var(--muted))]">{new Date(a.publishedAt).toLocaleDateString()}</div>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      <Section
+        title={t('sectionLatestBlog')}
+        right={
+          <Link to={buildPagePath(locale, 'blog')} className="inline-flex items-center gap-1 text-xs text-[rgb(var(--muted))] hover:text-[rgb(var(--fg))]">
+            {t('navBlog')}
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        }
+      >
+        <div className="grid gap-3 md:grid-cols-2">
+          {blogPosts.map((post) => (
+            <Link key={post.slug} to={buildBlogArticlePath(locale, post.slug)}>
+              <Card className="h-full p-4 transition hover:border-[rgb(var(--accent))]">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="text-sm font-medium text-[rgb(var(--fg))]">{post.title}</div>
+                  {post.category && <Badge className="bg-transparent">{post.category}</Badge>}
+                </div>
+                <div className="mt-2 text-xs leading-relaxed text-[rgb(var(--muted))]">{post.description}</div>
+                <div className="mt-4 flex items-center justify-between gap-3 text-xs text-[rgb(var(--muted))]">
+                  <span>{new Date(post.publishDate).toLocaleDateString()}</span>
+                  <span>{post.readingTime}</span>
+                </div>
               </Card>
             </Link>
           ))}
