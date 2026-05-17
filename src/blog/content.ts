@@ -46,9 +46,11 @@ function parseScalar(value: string): FrontmatterValue {
 }
 
 function parseFrontmatter(raw: string) {
-  const match = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
+  const normalizedRaw = raw.replace(/^\uFEFF/, '')
+  const candidate = normalizedRaw.startsWith('---') ? normalizedRaw : normalizedRaw.trimStart()
+  const match = candidate.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
   if (!match) {
-    return { meta: {}, content: raw.trim() }
+    return { meta: {}, content: normalizedRaw.trim() }
   }
 
   const [, frontmatter, content] = match
