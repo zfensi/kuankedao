@@ -65,7 +65,9 @@ export function useManagedJsonLd(id: string, data: JsonLdValue | null) {
   }, [id, serialized])
 }
 
-export function usePageSeoOverride(meta: { title: string; description: string; url?: string } | null) {
+export function usePageSeoOverride(
+  meta: { title: string; description: string; url?: string; type?: string; imageUrl?: string } | null,
+) {
   const serialized = meta ? JSON.stringify(meta) : null
 
   useEffect(() => {
@@ -74,17 +76,30 @@ export function usePageSeoOverride(meta: { title: string; description: string; u
     }
 
     queueMicrotask(() => {
-      const nextMeta = JSON.parse(serialized) as { title: string; description: string; url?: string }
+      const nextMeta = JSON.parse(serialized) as {
+        title: string
+        description: string
+        url?: string
+        type?: string
+        imageUrl?: string
+      }
 
       document.title = nextMeta.title
       ensureMetaContent('name', 'description', nextMeta.description)
       ensureMetaContent('property', 'og:title', nextMeta.title)
       ensureMetaContent('property', 'og:description', nextMeta.description)
+      ensureMetaContent('property', 'og:type', nextMeta.type ?? 'website')
       ensureMetaContent('name', 'twitter:title', nextMeta.title)
       ensureMetaContent('name', 'twitter:description', nextMeta.description)
+      ensureMetaContent('name', 'twitter:card', nextMeta.imageUrl ? 'summary_large_image' : 'summary')
 
       if (nextMeta.url) {
         ensureMetaContent('property', 'og:url', nextMeta.url)
+      }
+
+      if (nextMeta.imageUrl) {
+        ensureMetaContent('property', 'og:image', nextMeta.imageUrl)
+        ensureMetaContent('name', 'twitter:image', nextMeta.imageUrl)
       }
     })
   }, [serialized])

@@ -176,17 +176,18 @@ const zhPages: Record<TrustPageId, TrustPageContent> = {
   contact: {
     navLabel: 'Contact',
     title: '联系我们 Contact Us',
-    eyebrow: '联系渠道 / Contact Channels',
+    eyebrow: '商务联系 / Contact Channels',
     intro:
-      '如果你需要商务合作、资源入驻、内容修正、隐私请求或一般咨询，可以通过本站对应页面提交信息。We route messages by request type so that business inquiries, support matters, and content feedback can be handled more efficiently.',
+      '如果你原本想通过旧的 Request 页面提交合作需求，现在请统一通过本页发起联系。这里用于承接品牌方、项目方的合作咨询，也支持一般商务沟通、内容修正、隐私请求与公开联系。We route messages by request type so that business inquiries, support matters, and content feedback can be handled more efficiently.',
     updatedLabel: '最近更新：2026-06-11',
-    badges: ['Contact', '商务合作', 'Content Feedback', '隐私与支持'],
+    badges: ['Contact', '商务合作', '需求沟通', '隐私与支持'],
     contactCard: {
       title: '公开联系 Public Contact',
       emailLabel: '官方邮箱 Official Email',
       email: 'hi@kuankedao.com',
       notes: [
-        '适用于一般商务咨询、合作沟通、内容反馈与公开联系。',
+        '适用于品牌合作咨询、推广需求沟通、一般商务咨询、内容反馈与公开联系。',
+        '如你是从旧的 Request 页面跳转过来，可以直接发送合作目标、预算、时间线和目标市场。',
         '如需更快分流，建议按问题类型使用 Partners、Support 或 Privacy 相关页面。',
       ],
     },
@@ -194,16 +195,17 @@ const zhPages: Record<TrustPageId, TrustPageContent> = {
       {
         title: '联系范围 What You Can Contact Us For',
         paragraphs: [
-          '适用于资源合作咨询、品牌投放需求、案例内容更正、隐私相关问题、页面纠错、support follow-up 以及一般业务沟通。',
+          '适用于资源合作咨询、品牌投放需求、外链/SEO 合作沟通、案例内容更正、隐私相关问题、页面纠错、support follow-up 以及一般业务沟通。',
           '为便于处理，请尽量提供你的姓名或团队名称、联系方式、相关页面路径、问题摘要、project background 以及希望的回复方式。',
-          '官方联系邮箱 currently available 为 hi@kuankedao.com，你也可以通过站内页面提交合作资料或支持说明，平台会根据问题类型继续分流处理。',
+          '官方联系邮箱 currently available 为 hi@kuankedao.com。当前品牌方、项目方的合作需求统一由本页承接，平台会根据问题类型继续分流处理。',
           'If your request is urgent, please state the deadline, campaign date, or business impact clearly in the message.',
         ],
       },
       {
-        title: '建议联系路径 Recommended Path',
+        title: '提交合作需求 Recommended Path',
         paragraphs: [
-          '如你是品牌方或项目方，请优先通过联系页面直接说明目标、budget 和 timeline，这样平台更容易完成初步判断与分流。',
+          '如你是品牌方或项目方，请直接说明合作目标、预算范围、timeline、目标市场、期望资源类型，以及希望的下一步动作，这样平台更容易完成初步判断与分流。',
+          '建议优先按这种结构留言：Who you are / What you need / Target market / Budget / Timeline / Preferred next step。',
           '如你是资源方或服务方，请优先通过“入驻合作”页面提交机构信息、service scope、市场覆盖和案例摘要。',
           'For media, partnership, or strategic collaboration requests, you may also use this page as a general contact entry.',
         ],
@@ -221,15 +223,15 @@ const zhPages: Record<TrustPageId, TrustPageContent> = {
         paragraphs: [
           '建议在留言中使用简洁结构，例如：Who you are / What you need / Target market / Budget / Expected timeline / Preferred next step。',
           'A structured message helps us route the request faster and reduces unnecessary back-and-forth communication.',
-          '如直接通过 email 联系，建议在邮件主题中加入关键词，例如 Business Inquiry、Partner Application、Support Request 或 Privacy Request，以便更快识别。',
+          '如直接通过 email 联系，建议在邮件主题中加入关键词，例如 Cooperation Request、Business Inquiry、Partner Application、Support Request 或 Privacy Request，以便更快识别。',
         ],
       },
     ],
     linksTitle: '相关页面 Related Pages',
     links: [
-      { target: 'contact', label: '联系平台 Contact', description: '品牌方、项目方可先说明合作目标与预算。' },
       { target: 'partners', label: '资源入驻 Partners', description: '服务方与渠道方提交入驻合作资料。' },
       { target: 'support', label: '支持中心 Support', description: '针对问题排查、流程状态和申诉获取帮助。' },
+      { target: 'privacy', label: '隐私政策 Privacy', description: '了解联系信息、访问记录与数据处理方式。' },
     ],
   },
   support: {
@@ -431,17 +433,18 @@ const enPages: Record<TrustPageId, TrustPageContent> = {
   contact: {
     navLabel: 'Contact',
     title: 'Contact Us 联系我们',
-    eyebrow: 'Contact Channels / 联系渠道',
+    eyebrow: 'Business Contact / 联系渠道',
     intro:
-      'If you need business communication, partner onboarding, content correction, privacy requests, or general inquiries, use the relevant pages on this site so we can route the request correctly. 通过清晰的 contact path，我们可以让 business, support, and content-related messages进入更合适的处理流程。',
+      'If you originally planned to use the old request page, please use this page as the unified contact entry instead. It now handles brand-side cooperation inquiries, project requests, general business communication, content correction, privacy requests, and public contact. 通过清晰的 contact path，我们可以让 business, support, and content-related messages进入更合适的处理流程。',
     updatedLabel: 'Last updated: 2026-06-11',
-    badges: ['Contact', 'Business inquiries', '内容反馈', 'Privacy & support'],
+    badges: ['Contact', 'Business inquiries', 'Request intake', 'Privacy & support'],
     contactCard: {
       title: 'Public Contact 公开联系',
       emailLabel: 'Official Email 官方邮箱',
       email: 'hi@kuankedao.com',
       notes: [
-        'Use this address for general business inquiries, cooperation discussions, content feedback, and public contact.',
+        'Use this address for cooperation requests, business inquiries, content feedback, and public contact.',
+        'If you arrived here from the old request page, send your goals, budget range, timeline, and target market directly.',
         'For faster routing, more specific cases are usually better submitted through the partner, support, or privacy-related pages.',
       ],
     },
@@ -449,16 +452,17 @@ const enPages: Record<TrustPageId, TrustPageContent> = {
       {
         title: 'What to Contact Us For 联系范围',
         paragraphs: [
-          'Use this path for resource cooperation inquiries, campaign requests, case corrections, privacy-related concerns, page error reports, support follow-up, and general business communication.',
+          'Use this path for resource cooperation inquiries, backlink or SEO collaboration requests, campaign requests, case corrections, privacy-related concerns, page error reports, support follow-up, and general business communication.',
           'To speed up handling, include your name or team, contact details, related page path, issue summary, project background, and preferred reply method whenever possible.',
-          'The current public contact email is hi@kuankedao.com. You may also use on-site forms so the request can enter the right workflow directly.',
+          'The current public contact email is hi@kuankedao.com. Brand-side cooperation requests are now routed through this page first, then triaged into the right workflow.',
           '如果事情比较紧急，请明确 deadline、campaign launch date、预算窗口或 business impact，避免问题被误判为普通咨询。',
         ],
       },
       {
-        title: 'Recommended Paths 建议联系路径',
+        title: 'How to Submit a Request 建议联系路径',
         paragraphs: [
-          'If you are a brand or project owner, the best first step is this contact page, where you can explain goals, budget, target market, and timeline in a structured way.',
+          'If you are a brand or project owner, this page is the best first step. Explain your goals, budget range, target market, timeline, desired resource type, and preferred next step in one structured message.',
+          'A practical structure is: Who you are / What you need / Target market / Budget / Timeline / Preferred next step。',
           'If you are a service provider or channel partner, the best first step is the partner onboarding page, where you can share your organization profile, service range, coverage markets, and case summary.',
           'For media cooperation, strategic partnership, or PR-related communication, this page can also serve as a general contact entry.',
         ],
@@ -476,15 +480,15 @@ const enPages: Record<TrustPageId, TrustPageContent> = {
         paragraphs: [
           'A practical structure is: Who you are / What you need / Market or channel / Budget / Timeline / Desired next step。',
           '用结构化表达提交信息，通常会比只写一句“请联系我”更容易得到准确回复。',
-          'If you contact us by email, adding a clear subject such as Business Inquiry, Partner Application, Support Request, or Privacy Request will help route the message faster.',
+          'If you contact us by email, adding a clear subject such as Cooperation Request, Business Inquiry, Partner Application, Support Request, or Privacy Request will help route the message faster.',
         ],
       },
     ],
     linksTitle: 'Related Pages 相关页面',
     links: [
-      { target: 'contact', label: 'Contact Us 联系我们', description: 'For brands and project owners seeking cooperation.' },
       { target: 'partners', label: 'Partner Onboarding 资源入驻', description: 'For service providers and channels applying to join.' },
       { target: 'support', label: 'Support Center 支持中心', description: 'For issue diagnosis, status follow-up, and dispute help.' },
+      { target: 'privacy', label: 'Privacy Policy 隐私政策', description: 'Review how contact details and submitted information are handled.' },
     ],
   },
   support: {

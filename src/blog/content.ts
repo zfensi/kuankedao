@@ -4,6 +4,7 @@ export type BlogPost = {
   slug: string
   title: string
   description: string
+  image: string
   publishDate: string
   category: string
   tags: string[]
@@ -80,6 +81,7 @@ function normalizePost(filePath: string, raw: string): BlogPost {
     slug: getSlug(filePath),
     title: typeof meta.title === 'string' ? meta.title : getSlug(filePath),
     description: typeof meta.description === 'string' ? meta.description : '',
+    image: typeof meta.image === 'string' ? meta.image : '',
     publishDate: typeof meta.publishDate === 'string' ? meta.publishDate : '',
     category: typeof meta.category === 'string' ? meta.category : '',
     tags: Array.isArray(meta.tags) ? meta.tags : [],

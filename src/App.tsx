@@ -33,11 +33,18 @@ const pageRoutes = [
   { path: 'support.html', element: <TrustPage pageId="support" /> },
 ]
 
+const legacyRedirectRoutes = [
+  { path: 'request.html', to: 'contact.html' },
+]
+
 export default function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/index.html" replace />} />
+        {legacyRedirectRoutes.map((route) => (
+          <Route key={`legacy-${route.path}`} path={route.path} element={<Navigate to={`/${route.to}`} replace />} />
+        ))}
 
         <Route element={<Layout />}>
           {pageRoutes.map((route) => (
@@ -48,11 +55,20 @@ export default function App() {
         {localeOptions
           .filter((option) => option.value !== 'zh')
           .map((option) => (
-            <Route key={option.value} path={option.value} element={<Layout />}>
-              {pageRoutes.map((route) => (
-                <Route key={`${option.value}-${route.path}`} path={route.path} element={route.element} />
+            <>
+              {legacyRedirectRoutes.map((route) => (
+                <Route
+                  key={`legacy-${option.value}-${route.path}`}
+                  path={`${option.value}/${route.path}`}
+                  element={<Navigate to={`/${option.value}/${route.to}`} replace />}
+                />
               ))}
-            </Route>
+              <Route key={option.value} path={option.value} element={<Layout />}>
+                {pageRoutes.map((route) => (
+                  <Route key={`${option.value}-${route.path}`} path={route.path} element={route.element} />
+                ))}
+              </Route>
+            </>
           ))}
 
         <Route path="*" element={<Navigate to="/index.html" replace />} />

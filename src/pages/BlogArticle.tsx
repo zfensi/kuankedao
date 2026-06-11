@@ -9,6 +9,7 @@ import { MarkdownRenderer } from '@/blog/MarkdownRenderer'
 import { buildBlogArticlePath, buildPagePath } from '@/i18n/routing'
 import { useI18n } from '@/i18n/useI18n'
 import { useManagedJsonLd, usePageSeoOverride } from '@/lib/seo'
+import { resolveShareImage } from '@/lib/shareImage'
 
 export default function BlogArticle() {
   const { t, locale } = useI18n()
@@ -19,10 +20,20 @@ export default function BlogArticle() {
       return null
     }
 
+    const pageUrl = new URL(buildBlogArticlePath(locale, post.slug), window.location.origin).toString()
+    const imageUrl = resolveShareImage({
+      preferredPath: post.image,
+      subject: post.title,
+      summary: post.description || post.content.slice(0, 180),
+      theme: post.category || 'blog article',
+    })
+
     return {
       title: `${post.title} - ${t('brandName')}`,
       description: post.description || post.content.slice(0, 160),
-      url: new URL(buildBlogArticlePath(locale, post.slug), window.location.origin).toString(),
+      url: pageUrl,
+      type: 'article',
+      imageUrl,
     }
   }, [locale, post, t])
   const articleSchema = useMemo(() => {
@@ -31,6 +42,12 @@ export default function BlogArticle() {
     }
 
     const pageUrl = new URL(buildBlogArticlePath(locale, post.slug), window.location.origin).toString()
+    const imageUrl = resolveShareImage({
+      preferredPath: post.image,
+      subject: post.title,
+      summary: post.description || post.content.slice(0, 180),
+      theme: post.category || 'blog article',
+    })
 
     return {
       '@context': 'https://schema.org',
@@ -45,6 +62,12 @@ export default function BlogArticle() {
       keywords: post.tags,
       url: pageUrl,
       mainEntityOfPage: pageUrl,
+      image: [imageUrl],
+      author: {
+        '@type': 'Organization',
+        name: 'Kuankedao',
+        url: window.location.origin,
+      },
       publisher: {
         '@type': 'Organization',
         name: 'Kuankedao',

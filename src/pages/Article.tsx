@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { useI18n } from '@/i18n/useI18n'
 import { buildArticlePath, buildPagePath } from '@/i18n/routing'
-import { useManagedJsonLd } from '@/lib/seo'
+import { useManagedJsonLd, usePageSeoOverride } from '@/lib/seo'
+import { resolveShareImage } from '@/lib/shareImage'
 import { getArticle } from '@/api/kuankedao'
 import type { ArticleDetailResponse } from '@/api/types'
 
@@ -15,12 +16,39 @@ export default function Article() {
   const { slug } = useParams()
   const [data, setData] = useState<ArticleDetailResponse | null>(null)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
+  const seoMeta = useMemo(() => {
+    if (!data) {
+      return null
+    }
+
+    const pageUrl = new URL(buildArticlePath(locale, data.slug), window.location.origin).toString()
+    const imageUrl = resolveShareImage({
+      preferredPath: data.cover,
+      subject: data.title,
+      summary: data.summary,
+      theme: data.topic,
+    })
+
+    return {
+      title: `${data.title} - ${t('brandName')}`,
+      description: data.summary,
+      url: pageUrl,
+      type: 'article',
+      imageUrl,
+    }
+  }, [data, locale, t])
   const articleSchema = useMemo(() => {
     if (!data) {
       return null
     }
 
     const pageUrl = new URL(buildArticlePath(locale, data.slug), window.location.origin).toString()
+    const imageUrl = resolveShareImage({
+      preferredPath: data.cover,
+      subject: data.title,
+      summary: data.summary,
+      theme: data.topic,
+    })
 
     return {
       '@context': 'https://schema.org',
@@ -34,6 +62,12 @@ export default function Article() {
       inLanguage: locale === 'zh' ? 'zh-CN' : locale,
       url: pageUrl,
       mainEntityOfPage: pageUrl,
+      image: [imageUrl],
+      author: {
+        '@type': 'Organization',
+        name: 'Kuankedao',
+        url: window.location.origin,
+      },
       publisher: {
         '@type': 'Organization',
         name: 'Kuankedao',
@@ -47,6 +81,7 @@ export default function Article() {
   }, [data, locale])
 
   useManagedJsonLd('community-article', articleSchema)
+  usePageSeoOverride(seoMeta)
 
   useEffect(() => {
     if (!slug) return

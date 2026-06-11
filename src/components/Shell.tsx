@@ -124,10 +124,14 @@ export function Shell(props: { children: ReactNode }) {
     ensureMetaContent('name', 'keywords', t('siteKeywords'))
     ensureMetaContent('property', 'og:title', title)
     ensureMetaContent('property', 'og:description', description)
+    ensureMetaContent('property', 'og:type', 'website')
     ensureMetaContent('property', 'og:url', absoluteUrl)
+    ensureMetaContent('property', 'og:image', logoUrl)
     ensureMetaContent('property', 'og:locale', locale === 'zh' ? 'zh_CN' : locale.replace('-', '_'))
+    ensureMetaContent('name', 'twitter:card', 'summary')
     ensureMetaContent('name', 'twitter:title', title)
     ensureMetaContent('name', 'twitter:description', description)
+    ensureMetaContent('name', 'twitter:image', logoUrl)
 
     document.head
       .querySelectorAll('link[data-managed-seo="true"]')

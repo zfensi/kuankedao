@@ -6,7 +6,8 @@ import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { useI18n } from '@/i18n/useI18n'
 import { buildPagePath, buildResourcePath } from '@/i18n/routing'
-import { useManagedJsonLd } from '@/lib/seo'
+import { useManagedJsonLd, usePageSeoOverride } from '@/lib/seo'
+import { resolveShareImage } from '@/lib/shareImage'
 import { getResource } from '@/api/kuankedao'
 import type { ResourceDetailResponse } from '@/api/types'
 import { formatCategory } from '@/utils/category'
@@ -17,12 +18,37 @@ export default function ResourceDetail() {
   const [data, setData] = useState<ResourceDetailResponse | null>(null)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const contactLabel = locale === 'en' ? 'Contact Us' : locale === 'zh-tw' ? '聯絡我們' : '联系我们'
+  const seoMeta = useMemo(() => {
+    if (!data) {
+      return null
+    }
+
+    const pageUrl = new URL(buildResourcePath(locale, data.slug), window.location.origin).toString()
+    const imageUrl = resolveShareImage({
+      subject: data.name,
+      summary: data.description,
+      theme: formatCategory(data.category, locale),
+    })
+
+    return {
+      title: `${data.name} - ${t('brandName')}`,
+      description: data.description,
+      url: pageUrl,
+      type: 'website',
+      imageUrl,
+    }
+  }, [data, locale, t])
   const serviceSchema = useMemo(() => {
     if (!data) {
       return null
     }
 
     const pageUrl = new URL(buildResourcePath(locale, data.slug), window.location.origin).toString()
+    const imageUrl = resolveShareImage({
+      subject: data.name,
+      summary: data.description,
+      theme: formatCategory(data.category, locale),
+    })
 
     return {
       '@context': 'https://schema.org',
@@ -39,6 +65,7 @@ export default function ResourceDetail() {
         name: 'Kuankedao',
         url: window.location.origin,
       },
+      image: imageUrl,
       offers: {
         '@type': 'Offer',
         url: pageUrl,
@@ -50,6 +77,7 @@ export default function ResourceDetail() {
   }, [data, locale])
 
   useManagedJsonLd('resource-service', serviceSchema)
+  usePageSeoOverride(seoMeta)
 
   useEffect(() => {
     if (!slug) return
