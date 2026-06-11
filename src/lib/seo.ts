@@ -28,6 +28,17 @@ export function removeJsonLd(id: string) {
   element?.parentElement?.removeChild(element)
 }
 
+function ensureMetaContent(attribute: 'name' | 'property', key: string, content: string) {
+  let element = document.head.querySelector<HTMLMetaElement>(`meta[${attribute}="${key}"]`)
+  if (!element) {
+    element = document.createElement('meta')
+    element.setAttribute(attribute, key)
+    document.head.appendChild(element)
+  }
+
+  element.setAttribute('content', content)
+}
+
 export function useManagedJsonLd(id: string, data: JsonLdValue | null) {
   const serialized = data ? JSON.stringify(data) : null
 
@@ -52,4 +63,29 @@ export function useManagedJsonLd(id: string, data: JsonLdValue | null) {
       removeJsonLd(id)
     }
   }, [id, serialized])
+}
+
+export function usePageSeoOverride(meta: { title: string; description: string; url?: string } | null) {
+  const serialized = meta ? JSON.stringify(meta) : null
+
+  useEffect(() => {
+    if (!serialized) {
+      return
+    }
+
+    queueMicrotask(() => {
+      const nextMeta = JSON.parse(serialized) as { title: string; description: string; url?: string }
+
+      document.title = nextMeta.title
+      ensureMetaContent('name', 'description', nextMeta.description)
+      ensureMetaContent('property', 'og:title', nextMeta.title)
+      ensureMetaContent('property', 'og:description', nextMeta.description)
+      ensureMetaContent('name', 'twitter:title', nextMeta.title)
+      ensureMetaContent('name', 'twitter:description', nextMeta.description)
+
+      if (nextMeta.url) {
+        ensureMetaContent('property', 'og:url', nextMeta.url)
+      }
+    })
+  }, [serialized])
 }

@@ -1,6 +1,9 @@
+import { useMemo } from 'react'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { useI18n } from '@/i18n/useI18n'
+import { buildPagePath } from '@/i18n/routing'
+import { useManagedJsonLd } from '@/lib/seo'
 
 type FaqItem = {
   q: string
@@ -336,6 +339,65 @@ const enContent: PriceContent = {
 export default function Price() {
   const { locale } = useI18n()
   const content = locale === 'en' ? enContent : zhContent
+  const pageUrl = useMemo(() => new URL(buildPagePath(locale, 'price'), window.location.origin).toString(), [locale])
+
+  const serviceSchema = useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      '@id': `${pageUrl}#service`,
+      name: content.title,
+      description: content.intro,
+      url: pageUrl,
+      provider: {
+        '@type': 'Organization',
+        name: 'Kuankedao',
+        url: window.location.origin,
+      },
+      areaServed: 'Worldwide',
+      serviceType: locale === 'en' ? 'Link building service' : 'SEO 外链服务',
+      offers: [
+        {
+          '@type': 'Offer',
+          url: pageUrl,
+          priceCurrency: 'CNY',
+          price: '299',
+          category: locale === 'en' ? 'Monthly subscription' : '包月服务',
+          availability: 'https://schema.org/InStock',
+          description: content.highlights.map((item) => `${item.label}: ${item.value}`).join(' | '),
+        },
+        {
+          '@type': 'Offer',
+          url: pageUrl,
+          priceCurrency: 'CNY',
+          price: '100',
+          category: locale === 'en' ? 'Indexing add-on' : '收录加速附加服务',
+          availability: 'https://schema.org/InStock',
+          description: content.addOns[1]?.desc,
+        },
+      ],
+    }),
+    [content, locale, pageUrl],
+  )
+
+  const faqSchema = useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: content.faqs.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.a.join(' '),
+        },
+      })),
+    }),
+    [content],
+  )
+
+  useManagedJsonLd('price-service', serviceSchema)
+  useManagedJsonLd('price-faq', faqSchema)
 
   return (
     <div className="space-y-8">

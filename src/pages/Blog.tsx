@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { ArrowUpRight, Sparkles } from 'lucide-react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { Badge } from '@/components/ui/Badge'
@@ -5,7 +6,8 @@ import { Card } from '@/components/ui/Card'
 import { Select } from '@/components/ui/Select'
 import { listBlogCategories, listBlogPosts } from '@/blog/content'
 import { useI18n } from '@/i18n/useI18n'
-import { buildBlogArticlePath } from '@/i18n/routing'
+import { buildBlogArticlePath, buildPagePath } from '@/i18n/routing'
+import { useManagedJsonLd } from '@/lib/seo'
 
 export default function Blog() {
   const { t, locale } = useI18n()
@@ -16,6 +18,27 @@ export default function Blog() {
   const posts = listBlogPosts().filter((post) => !category || post.category === category)
   const featuredPost = posts.find((post) => post.featured) ?? posts[0] ?? null
   const remainingPosts = featuredPost ? posts.filter((post) => post.slug !== featuredPost.slug) : []
+  const blogSchema = useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'Blog',
+      '@id': `${new URL(buildPagePath(locale, 'blog'), window.location.origin).toString()}#blog`,
+      name: t('blogTitle'),
+      description: t('blogDesc'),
+      inLanguage: locale === 'zh' ? 'zh-CN' : locale,
+      url: new URL(buildPagePath(locale, 'blog'), window.location.origin).toString(),
+      blogPost: posts.slice(0, 12).map((post) => ({
+        '@type': 'BlogPosting',
+        headline: post.title,
+        description: post.description,
+        datePublished: post.publishDate,
+        url: new URL(buildBlogArticlePath(locale, post.slug), window.location.origin).toString(),
+      })),
+    }),
+    [locale, posts, t],
+  )
+
+  useManagedJsonLd('blog-list', blogSchema)
 
   return (
     <div className="space-y-10">

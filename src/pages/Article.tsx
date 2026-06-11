@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ChevronLeft } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { useI18n } from '@/i18n/useI18n'
-import { buildPagePath } from '@/i18n/routing'
+import { buildArticlePath, buildPagePath } from '@/i18n/routing'
+import { useManagedJsonLd } from '@/lib/seo'
 import { getArticle } from '@/api/kuankedao'
 import type { ArticleDetailResponse } from '@/api/types'
 
@@ -14,6 +15,38 @@ export default function Article() {
   const { slug } = useParams()
   const [data, setData] = useState<ArticleDetailResponse | null>(null)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
+  const articleSchema = useMemo(() => {
+    if (!data) {
+      return null
+    }
+
+    const pageUrl = new URL(buildArticlePath(locale, data.slug), window.location.origin).toString()
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      '@id': `${pageUrl}#article`,
+      headline: data.title,
+      description: data.summary,
+      datePublished: data.publishedAt,
+      dateModified: data.publishedAt,
+      articleSection: data.topic,
+      inLanguage: locale === 'zh' ? 'zh-CN' : locale,
+      url: pageUrl,
+      mainEntityOfPage: pageUrl,
+      publisher: {
+        '@type': 'Organization',
+        name: 'Kuankedao',
+        url: window.location.origin,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/icon-512.svg', window.location.origin).toString(),
+        },
+      },
+    }
+  }, [data, locale])
+
+  useManagedJsonLd('community-article', articleSchema)
 
   useEffect(() => {
     if (!slug) return

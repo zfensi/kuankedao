@@ -4,7 +4,8 @@ import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Select } from '@/components/ui/Select'
 import { useI18n } from '@/i18n/useI18n'
-import { buildArticlePath } from '@/i18n/routing'
+import { buildArticlePath, buildPagePath } from '@/i18n/routing'
+import { useManagedJsonLd } from '@/lib/seo'
 import { listArticles } from '@/api/kuankedao'
 import type { ArticleItem } from '@/api/types'
 
@@ -40,6 +41,29 @@ export default function Community() {
     ;(items ?? []).forEach((x) => set.add(x.topic))
     return Array.from(set).sort((a, b) => a.localeCompare(b))
   }, [items])
+
+  const listSchema = useMemo(() => {
+    if (items === null) {
+      return null
+    }
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: t('communityTitle'),
+      url: new URL(`${buildPagePath(locale, 'community')}${window.location.search}`, window.location.origin).toString(),
+      numberOfItems: items.length,
+      itemListElement: items.slice(0, 12).map((item: ArticleItem, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: new URL(buildArticlePath(locale, item.slug), window.location.origin).toString(),
+        name: item.title,
+        description: item.summary,
+      })),
+    }
+  }, [items, locale, t])
+
+  useManagedJsonLd('community-list', listSchema)
 
   return (
     <div>

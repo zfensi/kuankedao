@@ -184,73 +184,8 @@ async function getResource(req: Request, env: Env, slug: string) {
     scenarios: scenarios.results.map((s) => s.scenario),
     advantages: advantages.results.map((a) => a.advantage),
     cases: cases.results,
-    contactMethod: '提交需求后由平台撮合对接',
+    contactMethod: '联系平台后由平台协助对接',
   })
-}
-
-type CreateRequestBody = {
-  companyName?: unknown
-  contactName?: unknown
-  contactValue?: unknown
-  industry?: unknown
-  targetMarkets?: unknown
-  promotionGoals?: unknown
-  budgetRange?: unknown
-  projectCycle?: unknown
-  requirementDescription?: unknown
-}
-
-async function createRequest(req: Request, env: Env) {
-  const body = await parseJson<CreateRequestBody>(req)
-  if (!body) return badRequest('需要 application/json 请求体')
-
-  const companyName = toNullableString(body.companyName)
-  const contactName = toNullableString(body.contactName)
-  const contactValue = toNullableString(body.contactValue)
-  const industry = toNullableString(body.industry)
-  const budgetRange = toNullableString(body.budgetRange)
-  const projectCycle = toNullableString(body.projectCycle)
-  const requirementDescription = toNullableString(body.requirementDescription)
-
-  const targetMarkets = Array.isArray(body.targetMarkets)
-    ? (body.targetMarkets.filter((x) => typeof x === 'string').map((x) => x.trim()).filter(Boolean) as string[])
-    : []
-  const promotionGoals = Array.isArray(body.promotionGoals)
-    ? (body.promotionGoals.filter((x) => typeof x === 'string').map((x) => x.trim()).filter(Boolean) as string[])
-    : []
-
-  if (!companyName) return badRequest('companyName 不能为空')
-  if (!contactValue) return badRequest('contactValue 不能为空')
-  if (!industry) return badRequest('industry 不能为空')
-  if (!budgetRange) return badRequest('budgetRange 不能为空')
-  if (!projectCycle) return badRequest('projectCycle 不能为空')
-  if (!requirementDescription) return badRequest('requirementDescription 不能为空')
-
-  const id = crypto.randomUUID()
-  await env.DB.prepare(
-    `
-      INSERT INTO requests (
-        id, company_name, contact_name, contact_value, industry, budget_range, project_cycle, requirement_description
-      ) VALUES (
-        ?, ?, ?, ?, ?, ?, ?, ?
-      )
-    `.trim(),
-  )
-    .bind(id, companyName, contactName ?? '', contactValue, industry, budgetRange, projectCycle, requirementDescription)
-    .run()
-
-  for (const m of targetMarkets) {
-    await env.DB.prepare('INSERT INTO request_target_markets (request_id, market) VALUES (?, ?)')
-      .bind(id, m)
-      .run()
-  }
-  for (const g of promotionGoals) {
-    await env.DB.prepare('INSERT INTO request_promotion_goals (request_id, goal) VALUES (?, ?)')
-      .bind(id, g)
-      .run()
-  }
-
-  return ok({ success: true, requestId: id, message: '已提交，平台将尽快与你联系' })
 }
 
 type PartnerApplicationBody = {
@@ -394,7 +329,6 @@ function matchApi(url: URL): { name: string; params: Record<string, string> } | 
     if (!slug) return null
     return { name: 'getResource', params: { slug } }
   }
-  if (path === '/api/requests') return { name: 'createRequest', params: {} }
   if (path === '/api/partner-applications') return { name: 'createPartnerApplication', params: {} }
   if (path === '/api/articles') return { name: 'listArticles', params: {} }
   if (path.startsWith('/api/articles/')) {
@@ -417,10 +351,6 @@ async function handleApi(req: Request, env: Env): Promise<Response> {
   if (match.name === 'getResource') {
     if (req.method !== 'GET') return methodNotAllowed()
     return getResource(req, env, match.params.slug)
-  }
-  if (match.name === 'createRequest') {
-    if (req.method !== 'POST') return methodNotAllowed()
-    return createRequest(req, env)
   }
   if (match.name === 'createPartnerApplication') {
     if (req.method !== 'POST') return methodNotAllowed()

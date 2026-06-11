@@ -227,7 +227,7 @@ const zhPages: Record<TrustPageId, TrustPageContent> = {
     ],
     linksTitle: '相关页面 Related Pages',
     links: [
-      { target: 'partners', label: '资源入驻 Partners', description: '服务方与渠道方提交入驻合作资料。' },
+      { target: 'contact', label: '联系平台 Contact', description: '品牌方、项目方可先说明合作目标与预算。' },
       { target: 'partners', label: '资源入驻 Partners', description: '服务方与渠道方提交入驻合作资料。' },
       { target: 'support', label: '支持中心 Support', description: '针对问题排查、流程状态和申诉获取帮助。' },
     ],

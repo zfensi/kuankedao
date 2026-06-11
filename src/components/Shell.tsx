@@ -4,6 +4,7 @@ import { Languages, Moon, Sun } from 'lucide-react'
 import { getTrustPageContent, getTrustPageLinks } from '@/content/trustPages'
 import { BrandLogo } from '@/components/BrandLogo'
 import { cn } from '@/lib/utils'
+import { removeJsonLd, upsertJsonLd } from '@/lib/seo'
 import { useI18n } from '@/i18n/useI18n'
 import { buildPagePath, localeOptions, parsePathname, translatePathname } from '@/i18n/routing'
 import { useTheme } from '@/hooks/useTheme'
@@ -40,22 +41,6 @@ function ensureLinkTag(rel: string, href: string, hreflang?: string) {
   element.setAttribute('href', href)
 }
 
-function ensureJsonLd(id: string, data: Record<string, unknown>) {
-  let element = document.head.querySelector<HTMLScriptElement>(`script[type="application/ld+json"][data-seo-id="${id}"]`)
-  if (!element) {
-    element = document.createElement('script')
-    element.type = 'application/ld+json'
-    element.setAttribute('data-seo-id', id)
-    document.head.appendChild(element)
-  }
-  element.textContent = JSON.stringify(data)
-}
-
-function removeJsonLd(id: string) {
-  const element = document.head.querySelector<HTMLScriptElement>(`script[type="application/ld+json"][data-seo-id="${id}"]`)
-  element?.parentElement?.removeChild(element)
-}
-
 export function Shell(props: { children: ReactNode }) {
   const location = useLocation()
   const navigate = useNavigate()
@@ -67,6 +52,11 @@ export function Shell(props: { children: ReactNode }) {
   useEffect(() => {
     const pathWithoutQuery = location.pathname || '/index.html'
     const absoluteUrl = new URL(`${pathWithoutQuery}${location.search}`, window.location.origin).toString()
+    const logoUrl = new URL('/icon-512.svg', window.location.origin).toString()
+    const organizationId = `${window.location.origin}#organization`
+    const websiteId = `${window.location.origin}#website`
+    const breadcrumbId = `${absoluteUrl}#breadcrumb`
+    const webpageId = `${absoluteUrl}#webpage`
 
     let title = t('siteTitle')
     let description = t('siteDescription')
@@ -151,22 +141,46 @@ export function Shell(props: { children: ReactNode }) {
     })
     ensureLinkTag('alternate', absoluteUrl, 'x-default')
 
-    ensureJsonLd('organization', {
+    upsertJsonLd('organization', {
       '@context': 'https://schema.org',
       '@type': 'Organization',
+      '@id': organizationId,
       name: t('brandName'),
       alternateName: t('brandNameEn'),
       url: window.location.origin,
       description,
+      email: 'hi@kuankedao.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: logoUrl,
+      },
+      contactPoint: [
+        {
+          '@type': 'ContactPoint',
+          contactType: 'customer support',
+          email: 'hi@kuankedao.com',
+          url: new URL(buildPagePath(locale, 'contact'), window.location.origin).toString(),
+          availableLanguage: localeOptions.map((option) => (option.value === 'zh' ? 'zh-CN' : option.value)),
+        },
+      ],
     })
 
-    ensureJsonLd('website', {
+    upsertJsonLd('website', {
       '@context': 'https://schema.org',
       '@type': 'WebSite',
+      '@id': websiteId,
       name: t('brandName'),
       url: window.location.origin,
       inLanguage: locale === 'zh' ? 'zh-CN' : locale,
       description,
+      publisher: {
+        '@id': organizationId,
+      },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: `${new URL(buildPagePath(locale, 'resources'), window.location.origin).toString()}?keyword={search_term_string}`,
+        'query-input': 'required name=search_term_string',
+      },
     })
 
     const breadcrumbItems = [
@@ -187,100 +201,42 @@ export function Shell(props: { children: ReactNode }) {
       })
     }
 
-    ensureJsonLd('breadcrumb', {
+    upsertJsonLd('breadcrumb', {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
+      '@id': breadcrumbId,
       itemListElement: breadcrumbItems,
     })
 
-    if (currentRoute.page === 'home' || currentRoute.page === 'resources') {
-      const faqData =
-        currentRoute.page === 'home'
-          ? [
-              {
-                '@type': 'Question',
-                name:
-                  locale === 'zh-tw'
-                    ? '首頁主要覆蓋哪些搜尋詞？'
-                    : locale === 'zh'
-                      ? '首页主要覆盖哪些搜索词？'
-                      : 'What search terms does the homepage target?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text:
-                    locale === 'zh-tw'
-                      ? '首頁重點承接 Guest Post、SEO 外鏈、免費外鏈、外鏈平台、Google 外鏈與高權重外鏈等搜尋需求。'
-                      : locale === 'zh'
-                        ? '首页重点承接 Guest Post、SEO 外链、免费外链、外链平台、谷歌外链与高权重外链等搜索需求。'
-                        : 'The homepage targets terms such as guest post, free backlinks, dofollow backlinks, link building services, and related discovery keywords.',
-                },
-              },
-              {
-                '@type': 'Question',
-                name:
-                  locale === 'zh-tw'
-                    ? '可以先看免費外鏈和投稿站點嗎？'
-                    : locale === 'zh'
-                      ? '可以先看免费外链和投稿站点吗？'
-                      : 'Can users start with free backlinks and guest post sites?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text:
-                    locale === 'zh-tw'
-                      ? '可以，首頁會先把免費外鏈、Guest Post 與外鏈交換相關入口集中展示。'
-                      : locale === 'zh'
-                        ? '可以，首页会先把免费外链、Guest Post 与外链交换相关入口集中展示。'
-                        : 'Yes. The homepage highlights free backlinks, guest post, and backlink exchange entry points first.',
-                },
-              },
-            ]
-          : [
-              {
-                '@type': 'Question',
-                name:
-                  locale === 'zh-tw'
-                    ? '資源頁可以找 Guest Post 站點嗎？'
-                    : locale === 'zh'
-                      ? '资源页可以找 Guest Post 站点吗？'
-                      : 'Can this page be used to find guest post sites?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text:
-                    locale === 'zh-tw'
-                      ? '可以，資源頁支援 Guest Post、投稿站點、免費外鏈與外鏈交換等方向的篩選。'
-                      : locale === 'zh'
-                        ? '可以，资源页支持 Guest Post、投稿站点、免费外链与外链交换等方向的筛选。'
-                        : 'Yes. The resources page supports guest post sites, free backlinks, backlink exchange, and related filtering.',
-                },
-              },
-              {
-                '@type': 'Question',
-                name:
-                  locale === 'zh-tw'
-                    ? '可以按分類與地區收斂嗎？'
-                    : locale === 'zh'
-                      ? '可以按分类与地区收敛吗？'
-                      : 'Can users narrow results by category and region?',
-                acceptedAnswer: {
-                  '@type': 'Answer',
-                  text:
-                    locale === 'zh-tw'
-                      ? '可以，資源頁支援關鍵詞、分類與地區篩選。'
-                      : locale === 'zh'
-                        ? '可以，资源页支持关键词、分类与地区筛选。'
-                        : 'Yes. The resources page supports keyword, category, and region filters.',
-                },
-              },
-            ]
+    const pageType =
+      currentRoute.page === 'about'
+        ? 'AboutPage'
+        : currentRoute.page === 'contact'
+          ? 'ContactPage'
+          : currentRoute.page === 'resources' || currentRoute.page === 'community' || currentRoute.page === 'blog'
+            ? 'CollectionPage'
+            : 'WebPage'
 
-      ensureJsonLd('faq', {
-        '@context': 'https://schema.org',
-        '@type': 'FAQPage',
-        mainEntity: faqData,
-      })
-    } else {
-      removeJsonLd('faq')
-    }
+    upsertJsonLd('webpage', {
+      '@context': 'https://schema.org',
+      '@type': pageType,
+      '@id': webpageId,
+      url: absoluteUrl,
+      name: title,
+      description,
+      inLanguage: locale === 'zh' ? 'zh-CN' : locale,
+      isPartOf: {
+        '@id': websiteId,
+      },
+      about: {
+        '@id': organizationId,
+      },
+      breadcrumb: {
+        '@id': breadcrumbId,
+      },
+    })
+
+    removeJsonLd('faq')
   }, [t, locale, location.pathname, location.search, currentRoute.page])
 
   const items = [

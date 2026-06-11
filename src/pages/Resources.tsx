@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/Input'
 import { Select } from '@/components/ui/Select'
 import { useI18n } from '@/i18n/useI18n'
 import { buildPagePath, buildResourcePath } from '@/i18n/routing'
+import { useManagedJsonLd } from '@/lib/seo'
 import { listResources } from '@/api/kuankedao'
 import type { ResourceItem } from '@/api/types'
 import { formatCategory } from '@/utils/category'
@@ -189,6 +190,46 @@ export default function Resources() {
       },
     ]
   }, [isGlobalLocale, locale])
+
+  const listSchema = useMemo(() => {
+    if (items === null) {
+      return null
+    }
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'ItemList',
+      name: t('resourcesTitle'),
+      url: new URL(`${buildPagePath(locale, 'resources')}${window.location.search}`, window.location.origin).toString(),
+      numberOfItems: items.length,
+      itemListElement: items.slice(0, 12).map((item: ResourceItem, index) => ({
+        '@type': 'ListItem',
+        position: index + 1,
+        url: new URL(buildResourcePath(locale, item.slug), window.location.origin).toString(),
+        name: item.name,
+        description: item.summary,
+      })),
+    }
+  }, [items, locale, t])
+
+  const faqSchema = useMemo(
+    () => ({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map((item) => ({
+        '@type': 'Question',
+        name: item.q,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.a,
+        },
+      })),
+    }),
+    [faqItems],
+  )
+
+  useManagedJsonLd('resources-list', listSchema)
+  useManagedJsonLd('resources-faq', faqSchema)
 
   return (
     <div className="space-y-10">

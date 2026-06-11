@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ChevronLeft } from 'lucide-react'
 import { Badge } from '@/components/ui/Badge'
@@ -5,13 +6,59 @@ import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 import { getBlogPost } from '@/blog/content'
 import { MarkdownRenderer } from '@/blog/MarkdownRenderer'
-import { buildPagePath } from '@/i18n/routing'
+import { buildBlogArticlePath, buildPagePath } from '@/i18n/routing'
 import { useI18n } from '@/i18n/useI18n'
+import { useManagedJsonLd, usePageSeoOverride } from '@/lib/seo'
 
 export default function BlogArticle() {
   const { t, locale } = useI18n()
   const { slug } = useParams()
   const post = slug ? getBlogPost(slug) : null
+  const seoMeta = useMemo(() => {
+    if (!post) {
+      return null
+    }
+
+    return {
+      title: `${post.title} - ${t('brandName')}`,
+      description: post.description || post.content.slice(0, 160),
+      url: new URL(buildBlogArticlePath(locale, post.slug), window.location.origin).toString(),
+    }
+  }, [locale, post, t])
+  const articleSchema = useMemo(() => {
+    if (!post) {
+      return null
+    }
+
+    const pageUrl = new URL(buildBlogArticlePath(locale, post.slug), window.location.origin).toString()
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      '@id': `${pageUrl}#article`,
+      headline: post.title,
+      description: post.description,
+      datePublished: post.publishDate,
+      dateModified: post.publishDate,
+      inLanguage: locale === 'zh' ? 'zh-CN' : locale,
+      articleSection: post.category,
+      keywords: post.tags,
+      url: pageUrl,
+      mainEntityOfPage: pageUrl,
+      publisher: {
+        '@type': 'Organization',
+        name: 'Kuankedao',
+        url: window.location.origin,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/icon-512.svg', window.location.origin).toString(),
+        },
+      },
+    }
+  }, [locale, post])
+
+  useManagedJsonLd('blog-article', articleSchema)
+  usePageSeoOverride(seoMeta)
 
   if (!post) {
     return (

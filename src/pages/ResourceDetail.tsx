@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { ChevronLeft } from 'lucide-react'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
 import { useI18n } from '@/i18n/useI18n'
-import { buildPagePath } from '@/i18n/routing'
+import { buildPagePath, buildResourcePath } from '@/i18n/routing'
+import { useManagedJsonLd } from '@/lib/seo'
 import { getResource } from '@/api/kuankedao'
 import type { ResourceDetailResponse } from '@/api/types'
 import { formatCategory } from '@/utils/category'
@@ -16,6 +17,39 @@ export default function ResourceDetail() {
   const [data, setData] = useState<ResourceDetailResponse | null>(null)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
   const contactLabel = locale === 'en' ? 'Contact Us' : locale === 'zh-tw' ? '聯絡我們' : '联系我们'
+  const serviceSchema = useMemo(() => {
+    if (!data) {
+      return null
+    }
+
+    const pageUrl = new URL(buildResourcePath(locale, data.slug), window.location.origin).toString()
+
+    return {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      '@id': `${pageUrl}#service`,
+      name: data.name,
+      description: data.description,
+      category: formatCategory(data.category, locale),
+      serviceType: formatCategory(data.category, locale),
+      areaServed: data.regions,
+      keywords: data.tags,
+      provider: {
+        '@type': 'Organization',
+        name: 'Kuankedao',
+        url: window.location.origin,
+      },
+      offers: {
+        '@type': 'Offer',
+        url: pageUrl,
+        availability: 'https://schema.org/InStock',
+        description: data.priceRange,
+      },
+      url: pageUrl,
+    }
+  }, [data, locale])
+
+  useManagedJsonLd('resource-service', serviceSchema)
 
   useEffect(() => {
     if (!slug) return
