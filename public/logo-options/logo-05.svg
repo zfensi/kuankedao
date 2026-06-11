@@ -1,0 +1,11 @@
+﻿<svg width="640" height="180" viewBox="0 0 640 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="180" rx="36" fill="#F8FAFC"/>
+  <rect x="30" y="34" width="120" height="112" rx="32" fill="#0F172A"/>
+  <path d="M52 100C62 78 74 67 90 67C106 67 118 78 128 100" stroke="#67E8F9" stroke-width="10" stroke-linecap="round"/>
+  <path d="M56 112H124" stroke="#E0F2FE" stroke-width="8" stroke-linecap="round" opacity="0.9"/>
+  <circle cx="70" cy="66" r="6" fill="#38BDF8"/>
+  <circle cx="112" cy="57" r="5" fill="#BAE6FD"/>
+  <text x="184" y="82" fill="#0F172A" font-size="40" font-family="Segoe UI, Arial, sans-serif" font-weight="700">宽客岛</text>
+  <text x="184" y="118" fill="#475569" font-size="20" font-family="Segoe UI, Arial, sans-serif">SEO 外链 · 免费外链平台 · 谷歌外链资源</text>
+  <text x="184" y="147" fill="#0EA5E9" font-size="16" font-family="Segoe UI, Arial, sans-serif">方案 5 · 岛屿地平线，更有品牌感</text>
+</svg>

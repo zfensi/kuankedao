@@ -1,0 +1,13 @@
+﻿<svg width="640" height="180" viewBox="0 0 640 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="180" rx="36" fill="#F8FAFC"/>
+  <path d="M90 30L134 55V105L90 130L46 105V55L90 30Z" fill="#0F172A"/>
+  <circle cx="90" cy="55" r="8" fill="#38BDF8"/>
+  <circle cx="58" cy="101" r="8" fill="#38BDF8"/>
+  <circle cx="122" cy="101" r="8" fill="#38BDF8"/>
+  <path d="M90 55L58 101" stroke="#E0F2FE" stroke-width="6"/>
+  <path d="M90 55L122 101" stroke="#E0F2FE" stroke-width="6"/>
+  <path d="M58 101H122" stroke="#E0F2FE" stroke-width="6"/>
+  <text x="184" y="82" fill="#0F172A" font-size="40" font-family="Segoe UI, Arial, sans-serif" font-weight="700">宽客岛</text>
+  <text x="184" y="118" fill="#475569" font-size="20" font-family="Segoe UI, Arial, sans-serif">SEO 外链 · 免费外链平台 · 谷歌外链资源</text>
+  <text x="184" y="147" fill="#0EA5E9" font-size="16" font-family="Segoe UI, Arial, sans-serif">方案 4 · 六边形网络，强调平台聚合</text>
+</svg>

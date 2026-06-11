@@ -1,4 +1,4 @@
-export const supportedLocales = ['zh', 'en', 'zh-tw', 'ja', 'ko'] as const
+export const supportedLocales = ['zh', 'en', 'zh-tw'] as const
 
 export type Locale = (typeof supportedLocales)[number]
 
@@ -7,26 +7,66 @@ export const defaultLocale: Locale = 'zh'
 const zh = {
     brandName: '宽客岛',
     brandNameEn: 'Kuankedao',
-    brandSubtitle: '全球推广资源对接平台',
+    brandSubtitle: 'SEO 外链 -- 免费外链平台 - 谷歌外链资源 -- 宽客岛',
+    siteTitle: '宽客岛 | SEO 外链 -- 免费外链平台 - 谷歌外链资源',
+    siteDescription:
+      '宽客岛专注 SEO 外链、免费外链平台和谷歌外链资源，聚合 link building 渠道、dofollow backlinks 资源与外链服务，帮助品牌快速筛选与对接。',
+    siteKeywords: 'SEO外链,免费外链平台,谷歌外链资源,外链发布,外链建设,link building services,dofollow backlinks',
+    seoResourcesTitle: '免费外链资源 - 免费外链平台与谷歌外链资源 - 宽客岛',
+    seoResourcesDescription:
+      '浏览宽客岛免费外链资源，筛选免费外链平台、谷歌外链资源、SEO 外链渠道与 dofollow backlinks 服务。',
+    seoRequestTitle: '发布外链需求 - SEO 外链合作对接 - 宽客岛',
+    seoRequestDescription:
+      '提交品牌的 SEO 外链、谷歌外链资源或 link building 需求，快速获取适合的外链服务与合作渠道。',
+    seoPartnersTitle: '外链资源入驻 - 提交渠道与服务 - 宽客岛',
+    seoPartnersDescription:
+      '外链平台、SEO 服务商与内容渠道可在宽客岛提交入驻资料，展示自身的免费外链平台或 dofollow backlinks 能力。',
+    seoCommunityTitle: '外链案例与内容观察 - 宽客岛',
+    seoCommunityDescription:
+      '查看宽客岛整理的 SEO 外链案例、推广方法与站外增长观察，了解外链建设和谷歌外链资源应用方式。',
+    seoBlogTitle: 'SEO 外链博客 - link building 方法与观点 - 宽客岛',
+    seoBlogDescription:
+      '宽客岛博客持续更新 SEO 外链、免费外链平台、link building services 与 dofollow backlinks 相关内容。',
+    seoAboutTitle: '关于宽客岛 - SEO 外链与谷歌外链资源平台',
+    seoAboutDescription:
+      '了解宽客岛如何聚合 SEO 外链、免费外链平台与谷歌外链资源，并为品牌提供更高效的合作对接入口。',
+    seoPriceTitle: '价格与 FAQ - 自动外链包月方案 - 宽客岛',
+    seoPriceDescription:
+      '查看宽客岛自动外链包月方案、Google 收录加购项、服务边界与常见问题，了解 299 包月价格页与 FAQ 说明。',
+    seoLinkBuildingServicesTitle: '最近 7 天数据 - link-building-services - 宽客岛',
+    seoLinkBuildingServicesDescription:
+      '最近 7 天数据页面占位，后续可用于展示、下载或接入外链数据相关入口。',
+    seoTrustTitleSuffix: ' - 宽客岛',
+    seoResourceDetailTitle: '外链资源详情 - 宽客岛',
+    seoResourceDetailDescription: '查看具体外链资源、服务说明、适用场景与合作方式。',
+    seoArticleDetailTitle: '内容详情 - 宽客岛',
+    seoArticleDetailDescription: '查看宽客岛整理的案例分析、方法文章与行业观察内容。',
+    seoBlogDetailTitle: '博客详情 - 宽客岛',
+    seoBlogDetailDescription: '阅读宽客岛博客文章，获取 SEO 外链和站外增长相关观点。',
+    homeTitleA: '外链、SEO 外链、Google 外链资源平台',
+    homeTitleB: 'link building services · dofollow backlinks · free backlinks',
+    homeDesc:
+      '宽客岛聚合免费外链平台、谷歌外链资源与 link building services，适合需要外链发布、站外推广和长期 SEO 增长的品牌团队。',
     navHome: '首页',
-    navResources: '资源广场',
+    navResources: '免费外链资源',
     navRequest: '发布需求',
     navCommunity: '社区内容',
     navBlog: '博客',
+    navPrice: '价格',
     navPartners: '入驻合作',
     navAbout: '关于',
     ctaPrimary: '发布需求',
     ctaSecondary: '资源入驻',
-    heroBadgeCurated: '精选资源网络',
-    heroBadgeGlobal: '全球化站点结构',
-    heroBadgeTrusted: '可信撮合体验',
+    heroBadgeCurated: '外链 / SEO 外链',
+    heroBadgeGlobal: 'Google 外链',
+    heroBadgeTrusted: 'free backlinks / dofollow backlinks',
     heroTitleA: '平台 · 聚合 · 连接 · 社区',
     heroTitleB: '让优质推广资源更快找到合适的合作方',
     heroDesc:
       '像一座岛：资源在这里汇聚，机会在这里流动。面向品牌方与服务方，提供更高效、更可信的资源对接与推广撮合。',
     heroStatResourcesValue: '300+',
     heroStatResourcesLabel: '可扩展资源位',
-    heroStatMarketsValue: '5',
+    heroStatMarketsValue: '3',
     heroStatMarketsLabel: '站点语言版本',
     heroStatResponseValue: '24h',
     heroStatResponseLabel: '目标响应时效',
@@ -62,14 +102,14 @@ const zh = {
     globalVisionDesc:
       '首页首期即承担品牌信任、资源引导与国际化展示三重任务，用统一的信息结构承接后续多语言扩展。',
     globalCardMarketsTitle: '语言与市场',
-    globalCardMarketsDesc: '以中文为默认入口，同时预留英文、繁体、日文、韩文版本，适配未来海外展示与内容分发。',
+    globalCardMarketsDesc: '以中文为默认入口，同时保留英文与繁体中文版本，兼顾主要展示场景与后续内容分发。',
     globalCardRoutesTitle: '统一 URL 规范',
     globalCardRoutesDesc: '所有页面统一采用 `.html` 结尾，目录结构清晰，便于展示、部署和后续 SEO 规划。',
     globalCardBrandTitle: '轻量但可信',
     globalCardBrandDesc: '以留白、卡片层级和简洁 CTA 建立专业感，避免过度装饰，突出平台的连接与撮合价值。',
     emptyTitle: '暂无数据',
     emptyDesc: '可以先发布需求，平台会根据你的目标推荐合适资源。',
-    resourcesTitle: '资源广场',
+    resourcesTitle: '免费外链资源',
     resourcesDesc: '按能力、地区与关键词快速筛选资源。',
     searchPlaceholder: '搜索资源名称 / 关键词',
     filterCategory: '分类',
@@ -97,7 +137,7 @@ const zh = {
     formSuccess: '已提交，平台将尽快与你联系',
     formError: '提交失败，请稍后重试',
     partnersTitle: '资源入驻合作',
-    partnersDesc: '填写机构与服务信息，通过审核后进入资源广场。',
+    partnersDesc: '填写机构与服务信息，通过审核后进入免费外链资源。',
     formOrgName: '机构/团队名称',
     formServiceCategories: '服务分类（至少 1 项，逗号分隔）',
     formServiceRegions: '覆盖地区（可选，逗号分隔）',
@@ -131,26 +171,66 @@ const zh = {
 const en = {
     brandName: 'Kuankedao',
     brandNameEn: 'Kuankedao',
-    brandSubtitle: 'Global Promotion Resource Matching Platform',
+    brandSubtitle: 'link building services, dofollow backlinks',
+    siteTitle: 'Kuankedao | link building services, dofollow backlinks',
+    siteDescription:
+      'Kuankedao provides link building services, free backlink resources, and curated dofollow backlinks to help brands discover scalable SEO outreach opportunities.',
+    siteKeywords: 'link building services,dofollow backlinks,free backlinks,backlink platform,SEO backlinks,Google backlinks',
+    seoResourcesTitle: 'Free Backlink Resources - Free Backlink Platforms - Kuankedao',
+    seoResourcesDescription:
+      'Browse curated backlink resources, free backlink platforms, Google-friendly outreach channels, and dofollow backlink services on Kuankedao.',
+    seoRequestTitle: 'Submit a Link Building Request - Kuankedao',
+    seoRequestDescription:
+      'Share your SEO backlink goals, Google outreach needs, or link building requirements and get matched with suitable partners.',
+    seoPartnersTitle: 'Partner Onboarding for Backlink Services - Kuankedao',
+    seoPartnersDescription:
+      'Backlink platforms, SEO service providers, and outreach partners can submit onboarding details to join Kuankedao.',
+    seoCommunityTitle: 'Case Studies and Growth Insights - Kuankedao',
+    seoCommunityDescription:
+      'Explore case studies, content insights, and practical observations around SEO backlinks and off-page growth.',
+    seoBlogTitle: 'Link Building Blog - Dofollow Backlinks and SEO - Kuankedao',
+    seoBlogDescription:
+      'Read ongoing articles about link building services, free backlinks, dofollow backlinks, and SEO outreach strategy.',
+    seoAboutTitle: 'About Kuankedao - Link Building Services Platform',
+    seoAboutDescription:
+      'Learn how Kuankedao organizes backlink resources, outreach opportunities, and SEO service matching for brands.',
+    seoPriceTitle: 'Pricing and FAQ - Automated Backlink Plan - Kuankedao',
+    seoPriceDescription:
+      'Review Kuankedao pricing, monthly backlink plan details, Google indexing add-on, service scope, and frequently asked questions.',
+    seoLinkBuildingServicesTitle: 'Recent 7-Day Data - link-building-services - Kuankedao',
+    seoLinkBuildingServicesDescription:
+      'Placeholder page for recent 7-day data. It can later host backlink data view, download, or related access entry points.',
+    seoTrustTitleSuffix: ' - Kuankedao',
+    seoResourceDetailTitle: 'Backlink Resource Detail - Kuankedao',
+    seoResourceDetailDescription: 'Review a specific backlink resource, service scope, scenarios, and contact path.',
+    seoArticleDetailTitle: 'Insight Detail - Kuankedao',
+    seoArticleDetailDescription: 'Read Kuankedao case studies, educational content, and practical market observations.',
+    seoBlogDetailTitle: 'Blog Detail - Kuankedao',
+    seoBlogDetailDescription: 'Read Kuankedao blog content about link building and long-term SEO growth.',
+    homeTitleA: 'Link Building Services, Dofollow Backlinks, Free Backlinks',
+    homeTitleB: 'Google backlinks and SEO backlink resources',
+    homeDesc:
+      'Kuankedao helps brands explore backlink platforms, Google-friendly outreach resources, and dofollow backlink opportunities for long-term organic growth.',
     navHome: 'Home',
     navResources: 'Resources',
     navRequest: 'Submit Request',
     navCommunity: 'Community',
     navBlog: 'Blog',
+    navPrice: 'Pricing',
     navPartners: 'Partners',
     navAbout: 'About',
     ctaPrimary: 'Submit Request',
     ctaSecondary: 'Become a Partner',
-    heroBadgeCurated: 'Curated Resource Network',
-    heroBadgeGlobal: 'Global Site Structure',
-    heroBadgeTrusted: 'Trusted Matching Experience',
+    heroBadgeCurated: 'link building services',
+    heroBadgeGlobal: 'dofollow backlinks',
+    heroBadgeTrusted: 'free backlinks',
     heroTitleA: 'Platform · Aggregation · Connection · Community',
     heroTitleB: 'Match quality growth resources with the right partners',
     heroDesc:
       'An island of resources: supply gathers here and opportunities flow. Built for brands and providers to collaborate with clarity and trust.',
     heroStatResourcesValue: '300+',
     heroStatResourcesLabel: 'Scalable resource slots',
-    heroStatMarketsValue: '5',
+    heroStatMarketsValue: '3',
     heroStatMarketsLabel: 'Site language versions',
     heroStatResponseValue: '24h',
     heroStatResponseLabel: 'Target response time',
@@ -187,14 +267,14 @@ const en = {
     globalVisionDesc:
       'The homepage carries trust building, resource guidance, and international presentation from day one through a single consistent information structure.',
     globalCardMarketsTitle: 'Languages and markets',
-    globalCardMarketsDesc: 'Keep Chinese as the default entry while preparing English, Traditional Chinese, Japanese, and Korean versions for future outreach.',
+    globalCardMarketsDesc: 'Keep Chinese as the default entry while retaining English and Traditional Chinese for the main presentation and content distribution scenarios.',
     globalCardRoutesTitle: 'Unified URL rules',
     globalCardRoutesDesc: 'Use `.html` endings consistently across pages for clearer structure, deployment alignment, and future SEO planning.',
     globalCardBrandTitle: 'Lightweight but credible',
     globalCardBrandDesc: 'Use whitespace, card hierarchy, and clear CTAs to feel professional without visual noise, keeping focus on connection and matching.',
     emptyTitle: 'No data yet',
     emptyDesc: 'Start by submitting a request. We will recommend resources based on your needs.',
-    resourcesTitle: 'Resource Marketplace',
+    resourcesTitle: 'Free Backlink Resources',
     resourcesDesc: 'Filter by capability, region, and keywords.',
     searchPlaceholder: 'Search name / keywords',
     filterCategory: 'Category',
@@ -258,12 +338,47 @@ export const translations = {
   en,
   'zh-tw': {
     ...zh,
-  },
-  ja: {
-    ...en,
-  },
-  ko: {
-    ...en,
+    brandSubtitle: 'SEO 外鏈 -- 免費外鏈平台 - 谷歌外鏈資源 -- 寬客島',
+    siteTitle: '寬客島 | SEO 外鏈 -- 免費外鏈平台 - 谷歌外鏈資源',
+    siteDescription:
+      '寬客島專注 SEO 外鏈、免費外鏈平台和谷歌外鏈資源，聚合 link building 渠道、dofollow backlinks 資源與外鏈服務，幫助品牌快速篩選與對接。',
+    siteKeywords: 'SEO外鏈,免費外鏈平台,谷歌外鏈資源,外鏈發布,外鏈建設,link building services,dofollow backlinks',
+    seoResourcesTitle: '免費外鏈資源 - 免費外鏈平台與谷歌外鏈資源 - 寬客島',
+    seoResourcesDescription:
+      '瀏覽寬客島免費外鏈資源，篩選免費外鏈平台、谷歌外鏈資源、SEO 外鏈渠道與 dofollow backlinks 服務。',
+    seoRequestTitle: '發布外鏈需求 - SEO 外鏈合作對接 - 寬客島',
+    seoRequestDescription:
+      '提交品牌的 SEO 外鏈、谷歌外鏈資源或 link building 需求，快速獲取適合的外鏈服務與合作渠道。',
+    seoPartnersTitle: '外鏈資源入駐 - 提交渠道與服務 - 寬客島',
+    seoPartnersDescription:
+      '外鏈平台、SEO 服務商與內容渠道可在寬客島提交入駐資料，展示自身的免費外鏈平台或 dofollow backlinks 能力。',
+    seoCommunityTitle: '外鏈案例與內容觀察 - 寬客島',
+    seoCommunityDescription:
+      '查看寬客島整理的 SEO 外鏈案例、推廣方法與站外增長觀察，了解外鏈建設和谷歌外鏈資源應用方式。',
+    seoBlogTitle: 'SEO 外鏈博客 - link building 方法與觀點 - 寬客島',
+    seoBlogDescription:
+      '寬客島博客持續更新 SEO 外鏈、免費外鏈平台、link building services 與 dofollow backlinks 相關內容。',
+    seoAboutTitle: '關於寬客島 - SEO 外鏈與谷歌外鏈資源平台',
+    seoAboutDescription:
+      '了解寬客島如何聚合 SEO 外鏈、免費外鏈平台與谷歌外鏈資源，並為品牌提供更高效的合作對接入口。',
+    seoPriceTitle: '價格與 FAQ - 自動外鏈包月方案 - 寬客島',
+    seoPriceDescription:
+      '查看寬客島自動外鏈包月方案、Google 收錄加購項、服務邊界與常見問題，了解 299 包月價格頁與 FAQ 說明。',
+    seoLinkBuildingServicesTitle: '最近 7 天數據 - link-building-services - 寬客島',
+    seoLinkBuildingServicesDescription:
+      '最近 7 天數據頁面占位，後續可用於展示、下載或接入外鏈數據相關入口。',
+    seoTrustTitleSuffix: ' - 寬客島',
+    seoResourceDetailTitle: '外鏈資源詳情 - 寬客島',
+    seoResourceDetailDescription: '查看具體外鏈資源、服務說明、適用場景與合作方式。',
+    seoArticleDetailTitle: '內容詳情 - 寬客島',
+    seoArticleDetailDescription: '查看寬客島整理的案例分析、方法文章與行業觀察內容。',
+    seoBlogDetailTitle: '博客詳情 - 寬客島',
+    seoBlogDetailDescription: '閱讀寬客島博客文章，獲取 SEO 外鏈和站外增長相關觀點。',
+    homeTitleA: '外鏈、SEO 外鏈、Google 外鏈資源平台',
+    homeTitleB: 'link building services · dofollow backlinks · free backlinks',
+    homeDesc:
+      '寬客島聚合免費外鏈平台、谷歌外鏈資源與 link building services，適合需要外鏈發布、站外推廣和長期 SEO 增長的品牌團隊。',
+    navPrice: '價格',
   },
 } as const
 

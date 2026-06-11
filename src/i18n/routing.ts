@@ -1,14 +1,31 @@
 import type { Locale } from './translations'
 
-export type AppPage = 'home' | 'resources' | 'request' | 'community' | 'blog' | 'partners' | 'about'
+export type AppPage =
+  | 'home'
+  | 'resources'
+  | 'community'
+  | 'blog'
+  | 'price'
+  | 'link-building-services'
+  | 'partners'
+  | 'about'
+  | 'terms'
+  | 'privacy'
+  | 'refund'
+  | 'contact'
+  | 'support'
 
 export const localeOptions: Array<{ value: Locale; label: string }> = [
   { value: 'zh', label: '简体中文' },
   { value: 'en', label: 'English' },
   { value: 'zh-tw', label: '繁体中文' },
-  { value: 'ja', label: '日本語' },
-  { value: 'ko', label: '한국어' },
 ]
+
+export type ParsedRoute =
+  | { locale: Locale; page: AppPage }
+  | { locale: Locale; page: 'resource-detail'; slug: string }
+  | { locale: Locale; page: 'article-detail'; slug: string }
+  | { locale: Locale; page: 'blog-detail'; slug: string }
 
 function getLocalePrefix(locale: Locale) {
   return locale === 'zh' ? '' : `/${locale}`
@@ -22,16 +39,28 @@ export function buildPagePath(locale: Locale, page: AppPage) {
       return `${prefix}/index.html`
     case 'resources':
       return `${prefix}/resources.html`
-    case 'request':
-      return `${prefix}/request.html`
     case 'community':
       return `${prefix}/community.html`
     case 'blog':
       return `${prefix}/blog.html`
+    case 'price':
+      return `${prefix}/price.html`
+    case 'link-building-services':
+      return `${prefix}/link-building-services.html`
     case 'partners':
       return `${prefix}/partners.html`
     case 'about':
       return `${prefix}/about.html`
+    case 'terms':
+      return `${prefix}/terms.html`
+    case 'privacy':
+      return `${prefix}/privacy.html`
+    case 'refund':
+      return `${prefix}/Our-Process-Refund.html`
+    case 'contact':
+      return `${prefix}/contact.html`
+    case 'support':
+      return `${prefix}/support.html`
   }
 }
 
@@ -47,32 +76,51 @@ export function buildBlogArticlePath(locale: Locale, slug: string) {
   return `${getLocalePrefix(locale)}/blog/${slug}.html`
 }
 
-function parsePathname(pathname: string) {
+export function parsePathname(pathname: string): ParsedRoute {
   const normalizedPath = pathname === '/' ? '/index.html' : pathname.replace(/\/+$/, '') || '/index.html'
   const matchedLocale = localeOptions.find((option) => normalizedPath === `/${option.value}` || normalizedPath.startsWith(`/${option.value}/`))
   const locale = matchedLocale?.value ?? 'zh'
   const rest = matchedLocale ? normalizedPath.slice(`/${matchedLocale.value}`.length) || '/index.html' : normalizedPath
+  const restLower = rest.toLowerCase()
 
   if (rest === '/index.html') {
     return { locale, page: 'home' as const }
   }
-  if (rest === '/resources.html') {
+  if (restLower === '/resources.html') {
     return { locale, page: 'resources' as const }
   }
-  if (rest === '/request.html') {
-    return { locale, page: 'request' as const }
-  }
-  if (rest === '/community.html') {
+  if (restLower === '/community.html') {
     return { locale, page: 'community' as const }
   }
-  if (rest === '/blog.html') {
+  if (restLower === '/blog.html') {
     return { locale, page: 'blog' as const }
   }
-  if (rest === '/partners.html') {
+  if (restLower === '/price.html') {
+    return { locale, page: 'price' as const }
+  }
+  if (restLower === '/link-building-services.html') {
+    return { locale, page: 'link-building-services' as const }
+  }
+  if (restLower === '/partners.html') {
     return { locale, page: 'partners' as const }
   }
-  if (rest === '/about.html') {
+  if (restLower === '/about.html') {
     return { locale, page: 'about' as const }
+  }
+  if (restLower === '/terms.html') {
+    return { locale, page: 'terms' as const }
+  }
+  if (restLower === '/privacy.html') {
+    return { locale, page: 'privacy' as const }
+  }
+  if (restLower === '/our-process-refund.html') {
+    return { locale, page: 'refund' as const }
+  }
+  if (restLower === '/contact.html') {
+    return { locale, page: 'contact' as const }
+  }
+  if (restLower === '/support.html') {
+    return { locale, page: 'support' as const }
   }
 
   const resourceMatch = rest.match(/^\/resources\/([^/]+)\.html$/)
@@ -103,11 +151,17 @@ export function translatePathname(pathname: string, locale: Locale) {
   switch (parsed.page) {
     case 'home':
     case 'resources':
-    case 'request':
     case 'community':
     case 'blog':
+    case 'price':
+    case 'link-building-services':
     case 'partners':
     case 'about':
+    case 'terms':
+    case 'privacy':
+    case 'refund':
+    case 'contact':
+    case 'support':
       return buildPagePath(locale, parsed.page)
     case 'resource-detail':
       return buildResourcePath(locale, parsed.slug)

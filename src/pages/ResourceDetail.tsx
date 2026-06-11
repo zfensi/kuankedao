@@ -15,6 +15,7 @@ export default function ResourceDetail() {
   const { slug } = useParams()
   const [data, setData] = useState<ResourceDetailResponse | null>(null)
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
+  const contactLabel = locale === 'en' ? 'Contact Us' : locale === 'zh-tw' ? '聯絡我們' : '联系我们'
 
   useEffect(() => {
     if (!slug) return
@@ -69,8 +70,8 @@ export default function ResourceDetail() {
           <ChevronLeft className="h-4 w-4" />
           {t('navResources')}
         </Link>
-        <Link to={buildPagePath(locale, 'request')}>
-          <Button size="sm">{t('ctaPrimary')}</Button>
+        <Link to={buildPagePath(locale, 'contact')}>
+          <Button size="sm">{contactLabel}</Button>
         </Link>
       </div>
 

@@ -20,24 +20,6 @@ export function getResource(slug: string) {
   return fetchJson<ResourceDetailResponse>(`/api/resources/${encodeURIComponent(slug)}`)
 }
 
-export function createRequest(body: {
-  companyName: string
-  contactName: string
-  contactValue: string
-  industry: string
-  targetMarkets: string[]
-  promotionGoals: string[]
-  budgetRange: string
-  projectCycle: string
-  requirementDescription: string
-}) {
-  return fetchJson<{ success: boolean; requestId: string; message: string }>(`/api/requests`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(body),
-  })
-}
-
 export function createPartnerApplication(body: {
   organizationName: string
   contactName: string
@@ -66,4 +48,3 @@ export function listArticles(params: { topic?: string; page?: number }) {
 export function getArticle(slug: string) {
   return fetchJson<ArticleDetailResponse>(`/api/articles/${encodeURIComponent(slug)}`)
 }
-

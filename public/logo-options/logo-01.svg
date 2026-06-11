@@ -1,0 +1,16 @@
+﻿<svg width="640" height="180" viewBox="0 0 640 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="180" rx="36" fill="#F8FAFC"/>
+  <rect x="28" y="28" width="124" height="124" rx="32" fill="url(#g1)"/>
+  <path d="M63 112V66H72V83L89 66H101L83 85L103 112H91L78 94L72 100V112H63Z" fill="white"/>
+  <path d="M111 66C121.493 66 130 74.5076 130 85V95C130 105.492 121.493 114 111 114C100.507 114 92 105.492 92 95V85C92 74.5076 100.507 66 111 66ZM111 77C106.582 77 103 80.5817 103 85V95C103 99.4183 106.582 103 111 103C115.418 103 119 99.4183 119 95V85C119 80.5817 115.418 77 111 77Z" fill="#BAE6FD"/>
+  <text x="184" y="82" fill="#0F172A" font-size="40" font-family="Segoe UI, Arial, sans-serif" font-weight="700">宽客岛</text>
+  <text x="184" y="118" fill="#475569" font-size="20" font-family="Segoe UI, Arial, sans-serif">SEO 外链 · 免费外链平台 · 谷歌外链资源</text>
+  <text x="184" y="147" fill="#0EA5E9" font-size="16" font-family="Segoe UI, Arial, sans-serif">方案 1 · 科技渐变 K/O 字母标</text>
+  <defs>
+    <linearGradient id="g1" x1="28" y1="28" x2="152" y2="152" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="0.6" stop-color="#0F3C82"/>
+      <stop offset="1" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+</svg>

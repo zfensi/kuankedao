@@ -23,8 +23,6 @@ function getInitialLocale(): Locale {
 
   if (nav.startsWith('zh-tw') || nav.includes('hant')) return 'zh-tw'
   if (nav.startsWith('zh')) return 'zh'
-  if (nav.startsWith('ja')) return 'ja'
-  if (nav.startsWith('ko')) return 'ko'
   if (nav.startsWith('en')) return 'en'
 
   return defaultLocale
@@ -59,8 +57,6 @@ export function I18nProvider(props: { children: ReactNode }) {
         zh: 'zh-CN',
         en: 'en',
         'zh-tw': 'zh-TW',
-        ja: 'ja',
-        ko: 'ko',
       }[locale] ?? 'zh-CN'
   }, [locale])
 
